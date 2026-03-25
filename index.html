@@ -1,0 +1,1977 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Refund — Gear 5</title>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Outfit:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --white: #FFFDF7;
+    --gold: #FFD700;
+    --gold-dark: #E5A100;
+    --red: #E63946;
+    --dark: #1A1A2E;
+    --purple-dark: #16213E;
+    --smoke-white: #F0EDE5;
+    --neon-gold: #FFE566;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html {
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+  }
+
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--dark);
+    color: var(--white);
+    overflow-x: hidden;
+  }
+
+  /* ===== CUSTOM CURSOR ===== */
+  body { cursor: default; }
+  a, button { cursor: pointer; }
+
+  /* ===== NAVBAR ===== */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1000;
+    padding: 1.2rem 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(26, 26, 46, 0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(255, 215, 0, 0.15);
+    transition: all 0.4s;
+  }
+
+  nav.scrolled {
+    padding: 0.8rem 3rem;
+    background: rgba(26, 26, 46, 0.95);
+  }
+
+  .logo {
+    font-family: 'Bangers', cursive;
+    font-size: 2.2rem;
+    letter-spacing: 3px;
+    background: linear-gradient(135deg, var(--gold), var(--neon-gold), var(--red));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: none;
+    position: relative;
+  }
+
+  .logo::after {
+    content: '⚡';
+    position: absolute;
+    right: -30px;
+    top: -5px;
+    font-size: 1.2rem;
+    -webkit-text-fill-color: var(--gold);
+    animation: flash 2s infinite;
+  }
+
+  @keyframes flash {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(1.3); }
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    text-decoration: none;
+    color: var(--smoke-white);
+    font-weight: 600;
+    font-size: 0.95rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    position: relative;
+    transition: color 0.3s;
+  }
+
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--gold);
+    transition: width 0.3s;
+  }
+
+  .nav-links a:hover { color: var(--gold); }
+  .nav-links a:hover::after { width: 100%; }
+
+  /* ===== HERO ===== */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    background: radial-gradient(ellipse at 50% 80%, rgba(255, 215, 0, 0.08) 0%, transparent 60%),
+                radial-gradient(ellipse at 20% 20%, rgba(230, 57, 70, 0.06) 0%, transparent 50%),
+                var(--dark);
+  }
+
+  /* Animated smoke/cloud effect */
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background:
+      radial-gradient(circle at 30% 70%, rgba(255, 255, 255, 0.03) 0%, transparent 40%),
+      radial-gradient(circle at 70% 30%, rgba(255, 215, 0, 0.04) 0%, transparent 40%),
+      radial-gradient(circle at 50% 50%, rgba(230, 57, 70, 0.02) 0%, transparent 50%);
+    animation: smokeFloat 20s ease-in-out infinite;
+  }
+
+  @keyframes smokeFloat {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    33% { transform: translate(3%, -2%) rotate(2deg); }
+    66% { transform: translate(-2%, 3%) rotate(-1deg); }
+  }
+
+  /* Energy rings */
+  .energy-ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 215, 0, 0.15);
+    animation: ringPulse 4s ease-in-out infinite;
+  }
+
+  .energy-ring:nth-child(1) { width: 400px; height: 400px; animation-delay: 0s; }
+  .energy-ring:nth-child(2) { width: 600px; height: 600px; animation-delay: 1s; }
+  .energy-ring:nth-child(3) { width: 800px; height: 800px; animation-delay: 2s; }
+
+  @keyframes ringPulse {
+    0%, 100% { transform: scale(0.8); opacity: 0; }
+    50% { transform: scale(1.2); opacity: 0.4; }
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 10;
+    max-width: 550px;
+    padding: 0 2rem;
+    text-align: left;
+  }
+
+  .hero-split {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3rem;
+    max-width: 1200px;
+    width: 100%;
+    padding: 0 2rem;
+  }
+
+  /* ===== AVATAR ===== */
+  .hero-avatar {
+    position: relative;
+    flex-shrink: 0;
+    animation: fadeSlideUp 1s 0.5s both;
+  }
+
+  .avatar-img {
+    width: 420px;
+    max-width: 45vw;
+    height: auto;
+    border-radius: 20px;
+    position: relative;
+    z-index: 2;
+    filter: drop-shadow(0 0 40px rgba(255, 215, 0, 0.35)) drop-shadow(0 0 80px rgba(230, 57, 70, 0.2));
+    animation: avatarFloat 5s ease-in-out infinite;
+  }
+
+  .avatar-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 110%;
+    height: 110%;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle, rgba(255, 215, 0, 0.2) 0%, rgba(230, 57, 70, 0.08) 50%, transparent 70%);
+    border-radius: 50%;
+    z-index: 1;
+    animation: glowPulse 3s ease-in-out infinite;
+  }
+
+  .avatar-lightning {
+    position: absolute;
+    width: 3px;
+    height: 60px;
+    background: linear-gradient(180deg, var(--gold), transparent);
+    z-index: 3;
+    border-radius: 2px;
+    opacity: 0;
+    animation: lightningStrike 4s infinite;
+  }
+
+  .avatar-lightning-1 {
+    top: 5%;
+    right: 10%;
+    transform: rotate(15deg);
+    animation-delay: 0s;
+  }
+
+  .avatar-lightning-2 {
+    top: 15%;
+    left: 5%;
+    transform: rotate(-20deg);
+    animation-delay: 2s;
+  }
+
+  @keyframes avatarFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+  }
+
+  @keyframes glowPulse {
+    0%, 100% { opacity: 0.6; transform: translate(-50%, -50%) scale(1); }
+    50% { opacity: 1; transform: translate(-50%, -50%) scale(1.08); }
+  }
+
+  @keyframes lightningStrike {
+    0%, 90%, 100% { opacity: 0; height: 60px; }
+    92% { opacity: 1; height: 80px; }
+    95% { opacity: 0.5; height: 60px; }
+    97% { opacity: 1; height: 90px; }
+  }
+
+  .hero-badge {
+    display: inline-block;
+    padding: 0.5rem 1.5rem;
+    border: 1px solid var(--gold);
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 2rem;
+    animation: fadeSlideUp 1s 0.2s both;
+  }
+
+  .hero h1 {
+    font-family: 'Bangers', cursive;
+    font-size: clamp(3.5rem, 10vw, 8rem);
+    line-height: 0.95;
+    letter-spacing: 4px;
+    margin-bottom: 1.5rem;
+    animation: fadeSlideUp 1s 0.4s both;
+  }
+
+  .hero h1 .gold { color: var(--gold); }
+  .hero h1 .red { color: var(--red); }
+  .hero h1 .outline {
+    -webkit-text-stroke: 2px var(--gold);
+    -webkit-text-fill-color: transparent;
+  }
+
+  .hero p {
+    font-size: 1.2rem;
+    font-weight: 300;
+    line-height: 1.7;
+    color: rgba(255, 253, 247, 0.7);
+    margin-bottom: 2.5rem;
+    animation: fadeSlideUp 1s 0.6s both;
+  }
+
+  .hero-buttons {
+    display: flex;
+    gap: 1.2rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    animation: fadeSlideUp 1s 0.8s both;
+  }
+
+  @keyframes fadeSlideUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem 2.5rem;
+    border-radius: 60px;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: none;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+    color: var(--dark);
+    box-shadow: 0 4px 30px rgba(255, 215, 0, 0.3);
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 8px 40px rgba(255, 215, 0, 0.5);
+  }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--white);
+    border: 2px solid rgba(255, 253, 247, 0.3);
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+    transform: translateY(-3px);
+  }
+
+  /* ===== QUICK NAV BAR ===== */
+  .quick-nav {
+    position: sticky;
+    top: 65px;
+    z-index: 900;
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.8rem 1.5rem;
+    background: rgba(22, 33, 62, 0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255, 215, 0, 0.08);
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .quick-nav::-webkit-scrollbar { display: none; }
+
+  .quick-nav-item {
+    flex-shrink: 0;
+    padding: 0.45rem 1.1rem;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-decoration: none;
+    color: rgba(255, 253, 247, 0.55);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.03);
+    transition: all 0.3s;
+    white-space: nowrap;
+  }
+
+  .quick-nav-item:hover {
+    color: var(--gold);
+    border-color: rgba(255, 215, 0, 0.3);
+    background: rgba(255, 215, 0, 0.06);
+  }
+
+  .quick-nav-item.active {
+    color: var(--dark);
+    background: var(--gold);
+    border-color: var(--gold);
+  }
+
+  .quick-nav-cta {
+    color: var(--gold);
+    border-color: rgba(255, 215, 0, 0.3);
+    background: rgba(255, 215, 0, 0.08);
+  }
+
+  .quick-nav-cta:hover {
+    background: var(--gold);
+    color: var(--dark);
+  }
+
+  @media (max-width: 768px) {
+    .quick-nav {
+      justify-content: flex-start;
+      padding: 0.6rem 1rem;
+      top: 56px;
+    }
+  }
+
+  /* ===== SECTION SHARED ===== */
+  section {
+    padding: 8rem 2rem;
+    position: relative;
+  }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 5rem;
+  }
+
+  .section-tag {
+    font-family: 'Bangers', cursive;
+    font-size: 1rem;
+    letter-spacing: 5px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+
+  .section-title {
+    font-family: 'Bangers', cursive;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    letter-spacing: 2px;
+    line-height: 1.1;
+  }
+
+  /* ===== ABOUT ===== */
+  #about {
+    background: linear-gradient(180deg, var(--dark) 0%, var(--purple-dark) 100%);
+  }
+
+  .about-grid {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .about-visual {
+    position: relative;
+    height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .gear5-orb {
+    width: 280px;
+    height: 280px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, var(--neon-gold), var(--gold-dark), var(--red));
+    box-shadow:
+      0 0 60px rgba(255, 215, 0, 0.4),
+      0 0 120px rgba(255, 215, 0, 0.2),
+      inset 0 0 60px rgba(255, 255, 255, 0.1);
+    animation: orbFloat 6s ease-in-out infinite;
+    position: relative;
+  }
+
+  .gear5-orb::after {
+    content: '🔥';
+    position: absolute;
+    font-size: 4rem;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: iconPulse 2s ease-in-out infinite;
+  }
+
+  @keyframes orbFloat {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-20px) scale(1.05); }
+  }
+
+  @keyframes iconPulse {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); }
+    50% { transform: translate(-50%, -50%) scale(1.15); }
+  }
+
+  .orbit-particle {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: var(--gold);
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--gold);
+  }
+
+  .orbit-particle:nth-child(2) { animation: orbit1 5s linear infinite; }
+  .orbit-particle:nth-child(3) { animation: orbit2 7s linear infinite; }
+  .orbit-particle:nth-child(4) { animation: orbit3 6s linear infinite; }
+
+  @keyframes orbit1 {
+    from { transform: rotate(0deg) translateX(180px) rotate(0deg); }
+    to { transform: rotate(360deg) translateX(180px) rotate(-360deg); }
+  }
+  @keyframes orbit2 {
+    from { transform: rotate(120deg) translateX(200px) rotate(-120deg); }
+    to { transform: rotate(480deg) translateX(200px) rotate(-480deg); }
+  }
+  @keyframes orbit3 {
+    from { transform: rotate(240deg) translateX(160px) rotate(-240deg); }
+    to { transform: rotate(600deg) translateX(160px) rotate(-600deg); }
+  }
+
+  .about-text h3 {
+    font-family: 'Bangers', cursive;
+    font-size: 2rem;
+    letter-spacing: 2px;
+    margin-bottom: 1.5rem;
+    color: var(--gold);
+  }
+
+  .about-text p {
+    font-weight: 300;
+    line-height: 1.8;
+    color: rgba(255, 253, 247, 0.75);
+    margin-bottom: 1rem;
+    font-size: 1.05rem;
+  }
+
+  /* ===== SERVICES ===== */
+  #services {
+    background: var(--purple-dark);
+  }
+
+  .services-grid {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+  }
+
+  .service-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 215, 0, 0.1);
+    border-radius: 20px;
+    padding: 2.5rem;
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .service-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--gold), var(--red), var(--gold));
+    transform: scaleX(0);
+    transition: transform 0.5s;
+  }
+
+  .service-card:hover::before { transform: scaleX(1); }
+
+  .service-card:hover {
+    transform: translateY(-10px);
+    border-color: rgba(255, 215, 0, 0.3);
+    box-shadow: 0 20px 60px rgba(255, 215, 0, 0.1);
+  }
+
+  .service-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+    display: block;
+  }
+
+  .service-card h3 {
+    font-family: 'Bangers', cursive;
+    font-size: 1.5rem;
+    letter-spacing: 2px;
+    margin-bottom: 1rem;
+    color: var(--white);
+  }
+
+  .service-card p {
+    font-weight: 300;
+    line-height: 1.7;
+    color: rgba(255, 253, 247, 0.6);
+    font-size: 0.95rem;
+  }
+
+  /* ===== BOUTIQUES ===== */
+  #boutiques {
+    background: var(--dark);
+  }
+
+  .boutiques-filter {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 3rem;
+    max-width: 1100px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .filter-btn {
+    padding: 0.4rem 0.9rem;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 215, 0, 0.15);
+    background: rgba(255, 255, 255, 0.03);
+    color: rgba(255, 253, 247, 0.5);
+    font-family: 'Bangers', cursive;
+    font-size: 1rem;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .filter-btn:hover,
+  .filter-btn.active {
+    background: var(--gold);
+    color: var(--dark);
+    border-color: var(--gold);
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+  }
+
+  .boutiques-grid {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 0.8rem;
+  }
+
+  .boutique-item {
+    padding: 0.7rem 1rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 215, 0, 0.07);
+    border-radius: 12px;
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: rgba(255, 253, 247, 0.75);
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    cursor: pointer;
+  }
+
+  .boutique-logo {
+    width: 22px;
+    height: 22px;
+    border-radius: 5px;
+    object-fit: contain;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 2px;
+    flex-shrink: 0;
+  }
+
+  .boutique-initial {
+    width: 22px;
+    height: 22px;
+    border-radius: 5px;
+    background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+    color: var(--dark);
+    font-family: 'Bangers', cursive;
+    font-size: 0.7rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    letter-spacing: 0;
+  }
+
+  .boutique-item:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+    background: rgba(255, 215, 0, 0.05);
+    transform: translateX(4px);
+  }
+
+  .boutique-item.hidden {
+    display: none;
+  }
+
+  .boutiques-count {
+    text-align: center;
+    margin-top: 2rem;
+    font-size: 0.9rem;
+    color: rgba(255, 253, 247, 0.4);
+    font-weight: 300;
+  }
+
+  .boutiques-count span {
+    color: var(--gold);
+    font-weight: 700;
+  }
+
+  /* ===== BOUTIQUE MODAL ===== */
+  .modal-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(8px);
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+    padding: 1.5rem;
+  }
+
+  .modal-overlay.open {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .modal-card {
+    background: var(--purple-dark);
+    border: 1px solid rgba(255, 215, 0, 0.2);
+    border-radius: 24px;
+    max-width: 520px;
+    width: 100%;
+    max-height: 85vh;
+    overflow-y: auto;
+    padding: 2.5rem;
+    position: relative;
+    transform: translateY(30px) scale(0.95);
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5), 0 0 60px rgba(255, 215, 0, 0.08);
+  }
+
+  .modal-overlay.open .modal-card {
+    transform: translateY(0) scale(1);
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 1.2rem;
+    right: 1.2rem;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 215, 0, 0.2);
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--white);
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+  }
+
+  .modal-close:hover {
+    background: var(--red);
+    border-color: var(--red);
+  }
+
+  .modal-header-row {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .modal-logo {
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.95);
+    object-fit: contain;
+    padding: 6px;
+    flex-shrink: 0;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+  }
+
+  .modal-logo-initial {
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+    color: var(--dark);
+    font-family: 'Bangers', cursive;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+  }
+
+  .modal-shop-name {
+    font-family: 'Bangers', cursive;
+    font-size: 2rem;
+    letter-spacing: 2px;
+    color: var(--gold);
+    margin-bottom: 0.3rem;
+  }
+
+  .modal-badge {
+    display: inline-block;
+    padding: 0.25rem 0.8rem;
+    border-radius: 50px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    background: rgba(255, 215, 0, 0.1);
+    color: var(--gold);
+    border: 1px solid rgba(255, 215, 0, 0.2);
+    margin-bottom: 1.5rem;
+  }
+
+  .modal-section {
+    margin-bottom: 1.5rem;
+  }
+
+  .modal-section-title {
+    font-family: 'Bangers', cursive;
+    font-size: 1rem;
+    letter-spacing: 2px;
+    color: var(--white);
+    margin-bottom: 0.6rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .modal-section p,
+  .modal-section li {
+    font-weight: 300;
+    font-size: 0.92rem;
+    line-height: 1.7;
+    color: rgba(255, 253, 247, 0.65);
+  }
+
+  .modal-section ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .modal-section ul li {
+    padding: 0.4rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  }
+
+  .modal-section ul li::before {
+    content: '▸ ';
+    color: var(--gold);
+  }
+
+  .modal-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.15), transparent);
+    margin: 1.5rem 0;
+  }
+
+  .modal-cta {
+    text-align: center;
+    margin-top: 1.5rem;
+  }
+
+  @media (max-width: 768px) {
+    .boutiques-grid {
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    }
+    .modal-card {
+      padding: 2rem 1.5rem;
+    }
+  }
+
+  /* ===== PRICING ===== */
+  #pricing {
+    background: linear-gradient(180deg, var(--dark) 0%, var(--purple-dark) 100%);
+  }
+
+  .pricing-grid {
+    max-width: 800px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+  }
+
+  .pricing-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 215, 0, 0.12);
+    border-radius: 24px;
+    padding: 3rem 2.5rem;
+    text-align: center;
+    position: relative;
+    transition: all 0.4s;
+  }
+
+  .pricing-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 60px rgba(255, 215, 0, 0.1);
+  }
+
+  .pricing-card-highlight {
+    border-color: var(--gold);
+    background: rgba(255, 215, 0, 0.04);
+    box-shadow: 0 0 40px rgba(255, 215, 0, 0.08);
+  }
+
+  .pricing-badge {
+    display: inline-block;
+    padding: 0.35rem 1.2rem;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+    color: var(--dark);
+    margin-bottom: 1.5rem;
+  }
+
+  .pricing-card h3 {
+    font-family: 'Bangers', cursive;
+    font-size: 1.6rem;
+    letter-spacing: 2px;
+    margin-bottom: 1rem;
+    color: var(--white);
+  }
+
+  .pricing-percent {
+    font-family: 'Bangers', cursive;
+    font-size: 4.5rem;
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+
+  .pricing-percent span {
+    font-size: 2rem;
+    vertical-align: super;
+  }
+
+  .pricing-desc {
+    font-weight: 300;
+    color: rgba(255, 253, 247, 0.6);
+    font-size: 0.95rem;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+  }
+
+  .pricing-features {
+    list-style: none;
+    text-align: left;
+    margin-bottom: 2rem;
+  }
+
+  .pricing-features li {
+    padding: 0.5rem 0;
+    color: rgba(255, 253, 247, 0.75);
+    font-size: 0.95rem;
+    font-weight: 400;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .pricing-example {
+    max-width: 600px;
+    margin: 3rem auto 0;
+    text-align: center;
+    padding: 1.5rem 2rem;
+    background: rgba(255, 215, 0, 0.05);
+    border: 1px solid rgba(255, 215, 0, 0.15);
+    border-radius: 16px;
+  }
+
+  .pricing-example p {
+    color: rgba(255, 253, 247, 0.8);
+    font-size: 1.05rem;
+    line-height: 1.6;
+  }
+
+  /* ===== STATS ===== */
+  #stats {
+    background: linear-gradient(135deg, var(--dark), var(--purple-dark));
+    padding: 6rem 2rem;
+  }
+
+  .stats-grid {
+    max-width: 1000px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+    text-align: center;
+  }
+
+  .stat-item {
+    padding: 2rem 1rem;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 215, 0, 0.08);
+    background: rgba(255, 255, 255, 0.02);
+  }
+
+  .stat-number {
+    font-family: 'Bangers', cursive;
+    font-size: 3rem;
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+
+  .stat-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255, 253, 247, 0.5);
+  }
+
+  /* ===== PROCESS ===== */
+  #process {
+    background: var(--purple-dark);
+  }
+
+  .process-steps {
+    max-width: 800px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .process-steps::before {
+    content: '';
+    position: absolute;
+    left: 30px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(180deg, var(--gold), var(--red), transparent);
+  }
+
+  .step {
+    display: flex;
+    gap: 2.5rem;
+    margin-bottom: 3.5rem;
+    align-items: flex-start;
+  }
+
+  .step-number {
+    flex-shrink: 0;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Bangers', cursive;
+    font-size: 1.5rem;
+    color: var(--dark);
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+    position: relative;
+    z-index: 2;
+  }
+
+  .step-content h3 {
+    font-family: 'Bangers', cursive;
+    font-size: 1.4rem;
+    letter-spacing: 2px;
+    margin-bottom: 0.5rem;
+    color: var(--white);
+  }
+
+  .step-content p {
+    font-weight: 300;
+    line-height: 1.7;
+    color: rgba(255, 253, 247, 0.6);
+  }
+
+  /* ===== CTA ===== */
+  #cta {
+    background: radial-gradient(ellipse at center, rgba(255, 215, 0, 0.1) 0%, var(--dark) 70%);
+    text-align: center;
+    padding: 10rem 2rem;
+  }
+
+  #cta h2 {
+    font-family: 'Bangers', cursive;
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    letter-spacing: 3px;
+    margin-bottom: 1.5rem;
+    line-height: 1.1;
+  }
+
+  #cta p {
+    font-weight: 300;
+    font-size: 1.2rem;
+    color: rgba(255, 253, 247, 0.6);
+    margin-bottom: 2.5rem;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* ===== FOOTER ===== */
+  footer {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 3rem 2rem;
+    text-align: center;
+    border-top: 1px solid rgba(255, 215, 0, 0.08);
+  }
+
+  .footer-logo {
+    font-family: 'Bangers', cursive;
+    font-size: 1.8rem;
+    letter-spacing: 3px;
+    background: linear-gradient(135deg, var(--gold), var(--red));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 1rem;
+  }
+
+  footer p {
+    font-size: 0.85rem;
+    color: rgba(255, 253, 247, 0.3);
+    font-weight: 300;
+  }
+
+  /* ===== SCROLL ANIMATIONS ===== */
+  .reveal {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 0.8s, transform 0.8s;
+  }
+
+  .reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ===== FLOATING PARTICLES ===== */
+  .particles {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .particle {
+    position: absolute;
+    background: var(--gold);
+    border-radius: 50%;
+    opacity: 0.15;
+    animation: floatUp linear infinite;
+  }
+
+  @keyframes floatUp {
+    0% { transform: translateY(100vh) scale(0); opacity: 0; }
+    10% { opacity: 0.15; }
+    90% { opacity: 0.15; }
+    100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+  }
+
+  /* ===== MOBILE ===== */
+  .mobile-toggle {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+
+  .mobile-toggle span {
+    width: 28px;
+    height: 2px;
+    background: var(--gold);
+    transition: 0.3s;
+  }
+
+  @media (max-width: 768px) {
+    .mobile-toggle { display: flex; }
+
+    .nav-links {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: rgba(26, 26, 46, 0.98);
+      flex-direction: column;
+      padding: 2rem;
+      gap: 1.5rem;
+      transform: translateY(-20px);
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s;
+    }
+
+    .nav-links.open {
+      transform: translateY(0);
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .about-grid { grid-template-columns: 1fr; }
+    .about-visual { height: 280px; }
+    .gear5-orb { width: 200px; height: 200px; }
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+
+    .hero-split {
+      flex-direction: column-reverse;
+      gap: 2rem;
+      text-align: center;
+    }
+
+    .hero-content { text-align: center; max-width: 100%; }
+
+    .hero-buttons { justify-content: center; }
+
+    .avatar-img { width: 280px; max-width: 70vw; }
+
+    nav { padding: 1rem 1.5rem; }
+    section { padding: 5rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Floating Particles -->
+<div class="particles" id="particles"></div>
+
+<!-- Navbar -->
+<nav id="navbar">
+  <a href="#" class="logo" style="text-decoration:none;">RF by GEAR 5</a>
+  <button class="mobile-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+  <ul class="nav-links">
+    <li><a href="#about">À propos</a></li>
+    <li><a href="#services">Avantages</a></li>
+    <li><a href="#boutiques">Boutiques</a></li>
+    <li><a href="#pricing">Tarifs</a></li>
+    <li><a href="#process">Process</a></li>
+    <li><a href="#cta">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="energy-ring"></div>
+  <div class="energy-ring"></div>
+  <div class="energy-ring"></div>
+  <div class="hero-split">
+    <div class="hero-content">
+      <span class="hero-badge">⚡ Gear 5 Activated</span>
+      <h1>
+        <span class="gold">RF</span> by<br>
+        <span class="outline">GEAR</span> <span class="red">5</span>
+      </h1>
+      <p>Assez des commandes trop chères, des délais interminables et des démarches compliquées ? Ici, tout est pensé pour vous simplifier la vie — récupérez votre argent rapidement, facilement et en toute tranquillité.</p>
+      <div class="hero-buttons">
+        <a href="#boutiques" class="btn btn-primary">🛍️ Voir les boutiques</a>
+        <a href="#process" class="btn btn-secondary">⚙️ Le process</a>
+        <a href="#pricing" class="btn btn-secondary">💰 Tarifs</a>
+        <a href="https://t.me/+P3jXwDHAhlc0NWI0" class="btn btn-primary" target="_blank">📱 @Gear5RF</a>
+      </div>
+    </div>
+    <div class="hero-avatar">
+      <div class="avatar-glow"></div>
+      <img src="avatar-gear5.png" alt="Gear 5 Avatar" class="avatar-img" />
+      <div class="avatar-lightning avatar-lightning-1"></div>
+      <div class="avatar-lightning avatar-lightning-2"></div>
+    </div>
+  </div>
+</section>
+
+<!-- Quick Nav Bar -->
+<div class="quick-nav" id="quickNav">
+  <a href="#about" class="quick-nav-item">⚡ À propos</a>
+  <a href="#services" class="quick-nav-item">🛡 Avantages</a>
+  <a href="#boutiques" class="quick-nav-item">🛍️ Boutiques</a>
+  <a href="#pricing" class="quick-nav-item">💰 Tarifs</a>
+  <a href="#process" class="quick-nav-item">📇 Process</a>
+  <a href="https://t.me/+P3jXwDHAhlc0NWI0" class="quick-nav-item quick-nav-cta" target="_blank">📱 Contact</a>
+</div>
+
+<!-- About -->
+<section id="about">
+  <div class="section-header reveal">
+    <div class="section-tag">⚡ Qui sommes-nous</div>
+    <h2 class="section-title">L'Avantage <span style="color: var(--gold)">Gear 5</span></h2>
+  </div>
+  <div class="about-grid">
+    <div class="about-visual reveal">
+      <div class="gear5-orb"></div>
+      <div class="orbit-particle"></div>
+      <div class="orbit-particle"></div>
+      <div class="orbit-particle"></div>
+    </div>
+    <div class="about-text reveal">
+      <h3>Pourquoi nous confier vos dossiers ?</h3>
+      <p>Gear 5 redéfinit les règles du jeu. Nous mettons notre expertise à votre service pour simplifier vos Refund, adaptés à chaque shop. Avec un taux de réussite de 98 % après 2 ans de pratique intensive, votre succès est notre priorité.</p>
+      <p>Consultez la section explicative des étapes, parcourez la liste des boutiques disponibles, puis passez commande pour lancer votre refund en toute confiance.</p>
+      <a href="#process" class="btn btn-primary" style="margin-top: 1.5rem;">Voir le process →</a>
+    </div>
+  </div>
+</section>
+
+<!-- Services / Avantages -->
+<section id="services">
+  <div class="section-header reveal">
+    <div class="section-tag">⚙️ Nos Engagements</div>
+    <h2 class="section-title">Pourquoi <span style="color: var(--red)">Gear 5</span> ?</h2>
+  </div>
+  <div class="services-grid">
+    <div class="service-card reveal">
+      <span class="service-icon">🛡</span>
+      <h3>Gestion de A à Z</h3>
+      <p>On s'occupe de la paperasse et des relances pour vous. Transparence totale sur le fonctionnement, accompagnement étape par étape.</p>
+    </div>
+    <div class="service-card reveal">
+      <span class="service-icon">🕒</span>
+      <h3>Réactivité 7j/7</h3>
+      <p>Un support humain qui ne vous laisse jamais sans réponse. Communication claire et réactive sur Telegram.</p>
+    </div>
+    <div class="service-card reveal">
+      <span class="service-icon">🔒</span>
+      <h3>Protection Totale</h3>
+      <p>Vos données personnelles sont traitées de manière éphémère et sécurisée. Aucun partage avec des tiers, chaque dossier est traité individuellement.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Stats -->
+<section id="stats">
+  <div class="stats-grid">
+    <div class="stat-item reveal">
+      <div class="stat-number" data-target="98">0</div>
+      <div class="stat-label">% Taux de réussite</div>
+    </div>
+    <div class="stat-item reveal">
+      <div class="stat-number" data-target="2">0</div>
+      <div class="stat-label">Ans d'expérience</div>
+    </div>
+    <div class="stat-item reveal">
+      <div class="stat-number" data-target="100">0</div>
+      <div class="stat-label">+ Boutiques testées</div>
+    </div>
+    <div class="stat-item reveal">
+      <div class="stat-number" data-target="7">0</div>
+      <div class="stat-label">j/7 Support réactif</div>
+    </div>
+  </div>
+</section>
+
+<!-- Parcours Client -->
+<section id="process">
+  <div class="section-header reveal">
+    <div class="section-tag">📇 Le Parcours Client</div>
+    <h2 class="section-title">En <span style="color: var(--gold)">5 étapes</span></h2>
+  </div>
+  <div class="process-steps">
+    <div class="step reveal">
+      <div class="step-number">1</div>
+      <div class="step-content">
+        <h3>Validation du panier</h3>
+        <p>Choisissez la boutique et envoyez-nous une capture d'écran de votre panier. Nous vérifions la faisabilité et validons avant tout achat.</p>
+      </div>
+    </div>
+    <div class="step reveal">
+      <div class="step-number">2</div>
+      <div class="step-content">
+        <h3>Passage de commande</h3>
+        <p>Une fois validé, passez commande en respectant les consignes communiquées. Créez un compte client et conservez vos identifiants.</p>
+      </div>
+    </div>
+    <div class="step reveal">
+      <div class="step-number">3</div>
+      <div class="step-content">
+        <h3>Réception & lancement du dossier</h3>
+        <p>À la réception du colis, contactez-nous immédiatement. Transférez-nous les échanges avec le service client. ⚠️ Ne jamais ouvrir le colis avant la fin du processus.</p>
+      </div>
+    </div>
+    <div class="step reveal">
+      <div class="step-number">4</div>
+      <div class="step-content">
+        <h3>Démarches de remboursement</h3>
+        <p>Nous prenons en charge l'ensemble des échanges avec la boutique. Une fois le remboursement effectué, une preuve est demandée pour clôturer le dossier.</p>
+      </div>
+    </div>
+    <div class="step reveal">
+      <div class="step-number">5</div>
+      <div class="step-content">
+        <h3>Commission</h3>
+        <p>Après confirmation du remboursement sur votre compte, la commission est réglée. Possibilité de paiement après remboursement (+5 %) pour une tranquillité maximale.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Tarification -->
+<section id="pricing">
+  <div class="section-header reveal">
+    <div class="section-tag">💱 Tarification & Flexibilité</div>
+    <h2 class="section-title">Nos <span style="color: var(--gold)">Formules</span></h2>
+  </div>
+  <div class="pricing-grid">
+    <div class="pricing-card reveal">
+      <div class="pricing-badge">Populaire</div>
+      <h3>Formule Anticipée</h3>
+      <div class="pricing-percent">25<span>%</span></div>
+      <p class="pricing-desc">Commission fixée dès la validation du dossier.</p>
+      <ul class="pricing-features">
+        <li>✅ Tarif préférentiel</li>
+        <li>✅ Gestion complète A à Z</li>
+        <li>✅ Support 7j/7</li>
+        <li>✅ Données sécurisées</li>
+      </ul>
+      <a href="https://t.me/+P3jXwDHAhlc0NWI0" class="btn btn-primary" target="_blank">Choisir ⚡</a>
+    </div>
+    <div class="pricing-card pricing-card-highlight reveal">
+      <div class="pricing-badge">Confort</div>
+      <h3>Formule Confort</h3>
+      <div class="pricing-percent">30<span>%</span></div>
+      <p class="pricing-desc">Commission prélevée uniquement après remboursement sur votre compte.</p>
+      <ul class="pricing-features">
+        <li>✅ Aucun paiement à l'avance</li>
+        <li>✅ Gestion complète A à Z</li>
+        <li>✅ Support 7j/7</li>
+        <li>✅ Zéro risque financier</li>
+      </ul>
+      <a href="https://t.me/+P3jXwDHAhlc0NWI0" class="btn btn-primary" target="_blank">Choisir ⚡</a>
+    </div>
+  </div>
+  <div class="pricing-example reveal">
+    <p>📱 <strong>Exemple :</strong> Produit à <span style="color: var(--gold)">1 000 €</span> → Commission : <span style="color: var(--red)">300 €</span> → Coût final pour vous : <strong>300 €</strong></p>
+  </div>
+</section>
+
+<!-- Boutiques -->
+<section id="boutiques">
+  <div class="section-header reveal">
+    <div class="section-tag">🛍️ Boutiques Disponibles</div>
+    <h2 class="section-title">Plus de <span style="color: var(--gold)">200</span> shops</h2>
+  </div>
+  <div class="boutiques-filter reveal" id="letterFilter"></div>
+  <div class="boutiques-grid reveal" id="boutiquesGrid"></div>
+  <div class="boutiques-count reveal"><span id="shopCount">0</span> boutiques disponibles — Liste mise à jour régulièrement</div>
+</section>
+
+<!-- CTA -->
+<section id="cta">
+  <div class="reveal">
+    <h2><span style="color: var(--gold)">Prêt</span> à lancer<br>votre <span style="color: var(--red)">Refund</span> ?</h2>
+    <p>Contactez le support pour démarrer votre dossier en toute confiance.</p>
+    <a href="https://t.me/+P3jXwDHAhlc0NWI0" class="btn btn-primary" style="font-size: 1.1rem; padding: 1.2rem 3rem;" target="_blank">📱 Contacter @Gear5RF ⚡</a>
+  </div>
+</section>
+
+<!-- Boutique Detail Modal -->
+<div class="modal-overlay" id="shopModal">
+  <div class="modal-card">
+    <button class="modal-close" id="modalClose">✕</button>
+    <div class="modal-header-row">
+      <img id="modalLogo" class="modal-logo" src="" alt="" />
+      <div id="modalLogoInitial" class="modal-logo-initial"></div>
+      <div>
+        <div class="modal-shop-name" id="modalName"></div>
+        <div class="modal-badge" id="modalBadge">Boutique vérifiée</div>
+      </div>
+    </div>
+
+    <div class="modal-section">
+      <div class="modal-section-title">📦 Description</div>
+      <p id="modalDesc">—</p>
+    </div>
+
+    <div class="modal-divider"></div>
+
+    <div class="modal-section">
+      <div class="modal-section-title">⚙️ Conditions</div>
+      <ul id="modalConditions"><li>—</li></ul>
+    </div>
+
+    <div class="modal-divider"></div>
+
+    <div class="modal-section">
+      <div class="modal-section-title">💰 Commission</div>
+      <p id="modalCommission">—</p>
+    </div>
+
+    <div class="modal-divider"></div>
+
+    <div class="modal-section">
+      <div class="modal-section-title">⏱️ Délai estimé</div>
+      <p id="modalDelai">—</p>
+    </div>
+
+    <div class="modal-cta">
+      <a href="https://t.me/+P3jXwDHAhlc0NWI0" class="btn btn-primary" target="_blank">Lancer le refund ⚡</a>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-logo">RF by GEAR 5 ⚡</div>
+  <p>© 2026 RF by Gear 5 — Tous droits réservés. Gear 5 Mode.</p>
+</footer>
+
+<script>
+  // Navbar scroll effect
+  window.addEventListener('scroll', () => {
+    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
+  });
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('active');
+      }
+    });
+  }, { threshold: 0.15 });
+  reveals.forEach(el => observer.observe(el));
+
+  // Counter animation
+  const counters = document.querySelectorAll('.stat-number');
+  const counterObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const el = entry.target;
+        const target = parseInt(el.dataset.target);
+        let current = 0;
+        const increment = target / 60;
+        const timer = setInterval(() => {
+          current += increment;
+          if (current >= target) {
+            el.textContent = target.toLocaleString();
+            clearInterval(timer);
+          } else {
+            el.textContent = Math.floor(current).toLocaleString();
+          }
+        }, 25);
+        counterObserver.unobserve(el);
+      }
+    });
+  }, { threshold: 0.5 });
+  counters.forEach(el => counterObserver.observe(el));
+
+  // Generate particles
+  const particlesContainer = document.getElementById('particles');
+  for (let i = 0; i < 20; i++) {
+    const p = document.createElement('div');
+    p.classList.add('particle');
+    const size = Math.random() * 4 + 2;
+    p.style.width = size + 'px';
+    p.style.height = size + 'px';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.animationDuration = (Math.random() * 15 + 10) + 's';
+    p.style.animationDelay = (Math.random() * 10) + 's';
+    particlesContainer.appendChild(p);
+  }
+
+  // Close mobile nav on link click
+  document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', () => {
+      document.querySelector('.nav-links').classList.remove('open');
+    });
+  });
+
+  // Quick nav scroll spy
+  const quickNavItems = document.querySelectorAll('.quick-nav-item[href^="#"]');
+  const sections = [];
+  quickNavItems.forEach(item => {
+    const id = item.getAttribute('href').substring(1);
+    const section = document.getElementById(id);
+    if (section) sections.push({ el: section, link: item });
+  });
+
+  window.addEventListener('scroll', () => {
+    const scrollPos = window.scrollY + 200;
+    let current = null;
+    sections.forEach(s => {
+      if (s.el.offsetTop <= scrollPos) current = s;
+    });
+    quickNavItems.forEach(i => i.classList.remove('active'));
+    if (current) current.link.classList.add('active');
+  });
+
+  // ===== BOUTIQUES LIST =====
+  const boutiques = [
+    "24S Luxe","Abercrombie","About You","Acne Studio","Adidas","Airsoft Entrepôt","Alinea","Allopneu","Alltricks","Alo","AMIS","Amazon FR","Arc'teryx","Arket","Arte","Asics","Autodoc","Axel Arigato",
+    "Baristina","Becquet","BenQ","Bershka","Birkenstock","Bol.com","Bonsoirs","Boohoo","Boozt","Bose","Bottega Veneta","BSTN","Bulk","Burberry",
+    "C.P. Company","Canon","Carhartt","Carl of Carl","Casablanca","Cdiscount","Chanel","Clarks","Coach","Corsair","COS","Crocs","Cultura","CyberTech",
+    "Daily Paper","Decathlon","Diesel","DJI","Doc Martens","Dorcel","Dream","Dreame","Durex","Dyson",
+    "eBay","ESN","Espace Plaisir","Estée Lauder",
+    "Farfetch","Fendi","Flaconi","Flexispot","Flipper Zero","Fossil","Fursac",
+    "GHD","G-Shock","Gertrude","Getsgoods","Go Pro","Guerlain","Gymshark",
+    "H&M","Helly Hansen","Hermès","Histoire d'Or","Hoka","Home24","HP","Hugo Boss",
+    "iHerb","Intersport","iRobot","I-Run","Izac",
+    "Jack & Jones","JBL","Jo Malone","Jonak",
+    "Kärcher","King Jouet","KitchenAid","K-Way","Kujten",
+    "La Chaise Longue","La Grande Récré","La Redoute","Lancaster","Lanvin","Le Tanneur","Ledger","Lego","Lenovo","Levis","Lidl","Loewe","Logitech","Longchamp","Lululemon","Lyle & Scott",
+    "Maison Francis Kurkdjian","Maje","Mango","Mano Mano","Manscaped","Marc Orian","Massimo Dutti","Maty","MaxCoffee","MaxGaming","Maxiscoot","Media Markt","Merrell","Michael Kors","Microsoft","Millet","Moncler","Montblanc","Montec","Moulinex","My Origines","MyPrott",
+    "NBA Store","Nespresso","New Balance","New Era","Nike","Ninja","Norauto","Nudient","Nutrimea","NZXT",
+    "Ocarat","On","Ooni","Oscaro",
+    "Packmoto","Palm Angels","Pandora","Parajumpers","Philips","Philips Hue","Prada","PSG","Puma","Pyrenex",
+    "Rakuten","Ralph Lauren","Ray-Ban","Razer","RhinoShield","Rimowa","Rituals","Rowenta",
+    "Salomon","Samsonite","Sandro","Sarenza","Saucony","Scuf Gaming","Secret Lab","Selfridges","Sephora","Shein","Shark Clean","Simba Matelas","Skims","Snipes","Sonos","Spartoo","Steelseries","Stihl","Superdry","Sunglass Hut","Swarovski",
+    "Tag Heuer","Tefal","Temu","The Kooples","Thomann","Tineco","Top4running","Trezor",
+    "UGG","Uniqlo","Urban Outfitters",
+    "Vanden Borre","Venum","Verbaudet","Versace","Victoria's Secret","Vitality",
+    "Wooting","Wopilo",
+    "Xiaomi",
+    "Zadig & Voltaire","Zalando","Zara","Zooplus"
+  ];
+
+  // ===== BOUTIQUE DETAILS (depuis fichier xlsx) =====
+  const shopDetails = {
+    "24S Luxe": { conditions: ["Maximum : 3 000 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "4 sem" },
+    "Abercrombie": { conditions: ["Maximum : 1 200 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "2 sem" },
+    "About You": { conditions: ["Maximum : 2 000 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "2 sem" },
+    "Adidas": { conditions: ["Maximum : 800 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "3–14 j" },
+    "Airsoft Entrepôt": { conditions: ["Maximum : 2 000 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "14 j" },
+    "Alltricks": { conditions: ["Maximum : 1 500 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "20 jours" },
+    "Alo": { conditions: ["Maximum : 500 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "10 j" },
+    "AMIS": { conditions: ["Maximum : 1 200 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile","⚠️ Vendu et expédié par Home24"], delai: "31 j" },
+    "Amazon FR": { conditions: ["Maximum : 6 000 €","4 articles max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile","⚠️ Vendu et expédié par Amazon. Ne pas allumer article"], delai: "30 jours" },
+    "Arc'teryx": { conditions: ["Maximum : 300 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "10 j" },
+    "Arket": { conditions: ["Maximum : 800 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "3 sem" },
+    "Arte": { conditions: ["Maximum : 1 200 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "2 sem" },
+    "Asics": { conditions: ["Maximum : 350 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "10 j" },
+    "Autodoc": { conditions: ["Maximum : 3 000 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile","⚠️ Prendre assurance colis"], delai: "4 sem" },
+    "Axel Arigato": { conditions: ["Maximum : 2 500 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "4 sem" },
+    "Baristina": { conditions: ["Maximum : 2 500 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "3 sem" },
+    "Becquet": { conditions: ["Maximum : 500 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "—" },
+    "BenQ": { conditions: ["Maximum : 2 000 €","3 articles max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "1 mois" },
+    "Bershka": { conditions: ["Maximum : 2 000 €","50 articles max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "2 sem" },
+    "Bol.com": { conditions: ["Maximum : 1 000 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "—" },
+    "Boohoo": { conditions: ["Maximum : 2 500 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "1 sem" },
+    "Boozt": { conditions: ["Maximum : 2 000 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "—" },
+    "Bose": { conditions: ["Maximum : 2 000 €","3 articles max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "4 sem" },
+    "Bottega Veneta": { conditions: ["Maximum : 4 000 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "4 sem" },
+    "BSTN": { conditions: ["Maximum : 1 000 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "14 j" },
+    "Burberry": { conditions: ["Maximum : 2 000 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "1 mois" },
+    "C.P. Company": { conditions: ["Maximum : 2 000 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "60 j" },
+    "Canon": { conditions: ["Maximum : 3 000 €","2 articles max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "1,5 mois" },
+    "Carhartt": { conditions: ["Maximum : 2 000 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "2 sem" },
+    "Carl of Carl": { conditions: ["Maximum : 2 000 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "1 mois" },
+    "Casablanca": { conditions: ["Maximum : 1 500 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "1 mois" },
+    "Cdiscount": { conditions: ["Maximum : 1 500 €","2 articles max","Retour : Oui","Compte fresh : Compte histo obligatoire","Livraison : Relais/Domicile"], delai: "10 jours" },
+    "Clarks": { conditions: ["Maximum : 2 000 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "10 j" },
+    "Coach": { conditions: ["Maximum : 2 500 €","3 articles max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "3 sem" },
+    "Corsair": { conditions: ["Maximum : 1 000 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "17 j" },
+    "COS": { conditions: ["Maximum : 2 000 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "20 j" },
+    "Crocs": { conditions: ["Maximum : 800 €","5 articles max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "4 j" },
+    "Cultura": { conditions: ["Maximum : 700 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "60 j" },
+    "CyberTech": { conditions: ["Maximum : 3 000 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "1,5 mois" },
+    "Daily Paper": { conditions: ["Maximum : 2 000 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "20 j" },
+    "Decathlon": { conditions: ["Maximum : 1 000 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "—" },
+    "Diesel": { conditions: ["Maximum : 5 000 €","15 articles max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "3 sem" },
+    "Doc Martens": { conditions: ["Maximum : 800 €","5 articles max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "7 j" },
+    "Dream": { conditions: ["Maximum : 1 500 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "30 j" },
+    "eBay": { conditions: ["Maximum : 500 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "2 sem" },
+    "Espace Plaisir": { conditions: ["Maximum : 250 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "7 j" },
+    "Estée Lauder": { conditions: ["Maximum : 2 000 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "7 j" },
+    "Fendi": { conditions: ["Maximum : 2 000 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "1,5 mois" },
+    "Flaconi": { conditions: ["Maximum : 250 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "5 j" },
+    "Flipper Zero": { conditions: ["Maximum : 300 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "10 j" },
+    "Fursac": { conditions: ["Maximum : 1 500 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "48h / 20 j" },
+    "GHD": { conditions: ["Maximum : 2 000 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "14 j" },
+    "G-Shock": { conditions: ["Maximum : 500 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "7 j" },
+    "Gertrude": { conditions: ["Maximum : 2 000 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "3 sem" },
+    "Getsgoods": { conditions: ["Maximum : 1 000 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "30 j" },
+    "Guerlain": { conditions: ["Maximum : 1 500 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "—" },
+    "Gymshark": { conditions: ["Maximum : 500 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile","⚠️ Prendre assurance colis"], delai: "3 j" },
+    "H&M": { conditions: ["Maximum : 1 200 €","15 articles max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "2 sem" },
+    "Hermès": { conditions: ["Maximum : 1 000 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "45 j" },
+    "Histoire d'Or": { conditions: ["Maximum : 1 000 €","3 articles max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "2 sem" },
+    "Hoka": { conditions: ["Maximum : 1 000 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "20 j" },
+    "Home24": { conditions: ["Maximum : 1 000 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile","⚠️ Vendu et expédié par Home24"], delai: "10 j" },
+    "HP": { conditions: ["Maximum : 2 000 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile","⚠️ Prendre assurance colis"], delai: "60 j" },
+    "Hugo Boss": { conditions: ["Maximum : 3 000 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "20 j" },
+    "iHerb": { conditions: ["Maximum : 350 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "48h" },
+    "Intersport": { conditions: ["Maximum : 350 €","3 articles max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "1 sem" },
+    "iRobot": { conditions: ["Maximum : 1 000 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "3–4 sem" },
+    "I-Run": { conditions: ["Maximum : 500 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile","⚠️ Prendre assurance colis"], delai: "10 j" },
+    "Izac": { conditions: ["Maximum : 1 000 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "20 j" },
+    "Jack & Jones": { conditions: ["Maximum : 1 200 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "5 sem" },
+    "JBL": { conditions: ["Maximum : 800 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "12 j" },
+    "Jo Malone": { conditions: ["Maximum : 2 000 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "14 j" },
+    "Jonak": { conditions: ["Maximum : 1 000 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "14 j" },
+    "Kärcher": { conditions: ["Maximum : 500 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile","⚠️ Prendre assurance colis"], delai: "3 sem" },
+    "KitchenAid": { conditions: ["Maximum : 2 200 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "15 j" },
+    "K-Way": { conditions: ["Maximum : 1 000 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "2 sem" },
+    "Kujten": { conditions: ["Maximum : 300 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile","⚠️ Prendre assurance colis"], delai: "10 j" },
+    "La Chaise Longue": { conditions: ["Maximum : 500 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "7 j" },
+    "La Redoute": { conditions: ["Maximum : 3 000 €","25 articles max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile","⚠️ Prendre assurance colis"], delai: "2 sem" },
+    "Lancaster": { conditions: ["Maximum : 2 000 €","2 articles max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "1 sem" },
+    "Lanvin": { conditions: ["Maximum : 2 000 €","2 articles max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "5 sem" },
+    "Le Tanneur": { conditions: ["Maximum : 2 000 €","2 articles max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile","⚠️ Prendre assurance colis"], delai: "2 mois" },
+    "Lego": { conditions: ["Maximum : 2 500 €","3 articles max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "2–3 sem" },
+    "Lenovo": { conditions: ["Maximum : 3 500 €","1 article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile","⚠️ Prendre assurance colis"], delai: "3 mois" },
+    "Lidl": { conditions: ["Maximum : 500 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile","⚠️ Prendre assurance colis"], delai: "20 j" },
+    "Loewe": { conditions: ["Maximum : 1 500 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "45 j" },
+    "Logitech": { conditions: ["Maximum : 1 500 €","3 articles max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "2 sem" },
+    "Longchamp": { conditions: ["Maximum : 1 000 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "2 mois" },
+    "Lululemon": { conditions: ["Maximum : 500 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "7 j" },
+    "Lyle & Scott": { conditions: ["Maximum : 500 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "10 j" },
+    "Maison Francis Kurkdjian": { conditions: ["Maximum : 500 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "10 j" },
+    "Maje": { conditions: ["Maximum : 300 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "—" },
+    "Mango": { conditions: ["Maximum : 1 200 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "2 sem" },
+    "Marc Orian": { conditions: ["Maximum : 1 500 €","3 articles max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "2 sem" },
+    "Massimo Dutti": { conditions: ["Maximum : 1 800 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "3 sem" },
+    "MaxCoffee": { conditions: ["Maximum : 2 500 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile","⚠️ Prendre assurance colis"], delai: "3 sem" },
+    "MaxGaming": { conditions: ["Maximum : 500 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Domicile"], delai: "14 j" },
+    "Merrell": { conditions: ["Maximum : 200 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile","⚠️ Prendre assurance colis"], delai: "7 j" },
+    "Michael Kors": { conditions: ["Maximum : 2 000 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile","⚠️ Prendre assurance colis"], delai: "14 j" },
+    "Microsoft": { conditions: ["Maximum : 2 000 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "30 j" },
+    "Millet": { conditions: ["Maximum : 500 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "5 j" },
+    "Moncler": { conditions: ["Maximum : 2 500 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "45 j" },
+    "Montblanc": { conditions: ["Maximum : 2 000 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "60 j" },
+    "Montec": { conditions: ["Maximum : 1 000 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile","⚠️ Prendre assurance colis"], delai: "14 j" },
+    "Moulinex": { conditions: ["Maximum : 2 000 €","2 articles max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "3 sem" },
+    "My Origines": { conditions: ["Maximum : 1 500 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "1 mois" },
+    "NBA Store": { conditions: ["Maximum : 800 €","5 articles max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "10 j" },
+    "Nespresso": { conditions: ["Maximum : 1 000 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "14 j" },
+    "New Balance": { conditions: ["Maximum : 700 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "20 j" },
+    "New Era": { conditions: ["Maximum : 800 €","5 articles max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "7 j" },
+    "Nike": { conditions: ["Maximum : 600 €","Pas d'article max","Retour : Oui","Compte fresh : Compte histo obligatoire","Livraison : Relais/Domicile"], delai: "20 j" },
+    "Ninja": { conditions: ["Maximum : 1 000 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "14 j" },
+    "Norauto": { conditions: ["Maximum : 250 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "10 j" },
+    "Nudient": { conditions: ["Maximum : 85 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "3 j" },
+    "NZXT": { conditions: ["Maximum : 2 000 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "1 mois" },
+    "Ocarat": { conditions: ["Maximum : 7 000 €","3 articles max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "3 sem" },
+    "On": { conditions: ["Maximum : 700 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "10/30 j" },
+    "Oscaro": { conditions: ["Maximum : 3 000 €","10 articles max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile","⚠️ Prendre assurance colis"], delai: "3 sem" },
+    "Pandora": { conditions: ["Maximum : 400 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "Instant" },
+    "Philips": { conditions: ["Maximum : 2 000 €","3 articles max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "2 mois" },
+    "Philips Hue": { conditions: ["Maximum : 1 000 €","5 articles max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "14 j" },
+    "Prada": { conditions: ["Maximum : 1 000 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "4 mois" },
+    "Puma": { conditions: ["Maximum : 1 000 €","3 articles max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "3–14 j" },
+    "Pyrenex": { conditions: ["Maximum : 1 000 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "14 j" },
+    "Rakuten": { conditions: ["Maximum : 1 500 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "1 mois" },
+    "Ralph Lauren": { conditions: ["Maximum : 1 200 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "2 sem / 1 mois" },
+    "Ray-Ban": { conditions: ["Maximum : 700 €","3 articles max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "20 j" },
+    "Razer": { conditions: ["Maximum : 2 700 €","5 articles max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "14 j" },
+    "RhinoShield": { conditions: ["Maximum : 350 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "7 j" },
+    "Rituals": { conditions: ["Maximum : 200 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "5 j" },
+    "Rowenta": { conditions: ["Maximum : 1 200 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "2 sem" },
+    "Samsonite": { conditions: ["Maximum : 1 000 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "20 j" },
+    "Sandro": { conditions: ["Maximum : 2 000 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "14 j" },
+    "Saucony": { conditions: ["Maximum : 250 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "5 j" },
+    "Scuf Gaming": { conditions: ["Maximum : 800 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "14 j" },
+    "Secret Lab": { conditions: ["Maximum : 2 000 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "14 j" },
+    "Selfridges": { conditions: ["Maximum : 2 000 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "—" },
+    "Shein": { conditions: ["Maximum : 750 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "7 j" },
+    "Skims": { conditions: ["Maximum : 700 €","10 articles max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "7 j" },
+    "Snipes": { conditions: ["Maximum : 1 500 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile","⚠️ Prendre assurance colis"], delai: "3 sem" },
+    "Sonos": { conditions: ["Maximum : 3 000 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "3 sem" },
+    "Spartoo": { conditions: ["Maximum : 200 / 700 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "5 j / 20 j" },
+    "Stihl": { conditions: ["Maximum : 2 500 €","5 articles max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "15 j" },
+    "Sunglass Hut": { conditions: ["Maximum : 2 300 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "10 j" },
+    "Superdry": { conditions: ["Maximum : 2 000 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "14 j après livraison" },
+    "Swarovski": { conditions: ["Maximum : 1 500 €","3 articles max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "2 sem" },
+    "Tefal": { conditions: ["Maximum : 1 500 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "4 sem" },
+    "Temu": { conditions: ["Maximum : 750 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "20 j" },
+    "The Kooples": { conditions: ["Maximum : 1 000 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "20 j" },
+    "Thomann": { conditions: ["Maximum : 2 000 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "4 sem" },
+    "Tineco": { conditions: ["Maximum : 2 000 €","10 articles max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile","⚠️ Vendu et expédié par Zalando"], delai: "3 sem" },
+    "Trezor": { conditions: ["Maximum : —","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "—" },
+    "UGG": { conditions: ["Maximum : 500 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "20 j" },
+    "Urban Outfitters": { conditions: ["Maximum : 1 000 €","Pas d'article max","Retour : Oui","Compte fresh : Oui","Livraison : Relais/Domicile"], delai: "14 j" },
+    "Zalando": { conditions: ["Maximum : 1 200 €","Pas d'article max","Retour : Oui","Compte fresh : Compte Histo obligatoire","Livraison : Relais/Domicile","⚠️ Vendu et expédié par Zalando"], delai: "20 j" },
+  };
+
+  // Get unique first letters
+  const letters = [...new Set(boutiques.map(b => b[0].toUpperCase()))].sort();
+  const filterContainer = document.getElementById('letterFilter');
+  const grid = document.getElementById('boutiquesGrid');
+  const countEl = document.getElementById('shopCount');
+
+  // Modal elements
+  const modal = document.getElementById('shopModal');
+  const modalClose = document.getElementById('modalClose');
+  const modalName = document.getElementById('modalName');
+  const modalLogo = document.getElementById('modalLogo');
+  const modalLogoInitial = document.getElementById('modalLogoInitial');
+  const modalBadge = document.getElementById('modalBadge');
+  const modalDesc = document.getElementById('modalDesc');
+
+  // ===== DOMAIN MAPPING FOR LOGOS =====
+  const shopDomains = {
+    "24S Luxe":"24s.com","Abercrombie":"abercrombie.com","About You":"aboutyou.fr","Acne Studio":"acnestudios.com","Adidas":"adidas.fr","Airsoft Entrepôt":"airsoft-entrepot.fr","Alinea":"alinea.com","Allopneu":"allopneus.com","Alltricks":"alltricks.fr","Alo":"aloyoga.com","AMIS":"amiparis.com","Amazon FR":"amazon.fr","Arc'teryx":"arcteryx.com","Arket":"arket.com","Arte":"arteantwerp.com","Asics":"asics.com","Autodoc":"autodoc.fr","Axel Arigato":"axelarigato.com",
+    "Baristina":"baristina.com","Becquet":"becquet.fr","BenQ":"benq.com","Bershka":"bershka.com","Birkenstock":"birkenstock.com","Bol.com":"bol.com","Bonsoirs":"bonsoirs.com","Boohoo":"boohoo.com","Boozt":"boozt.com","Bose":"bose.fr","Bottega Veneta":"bottegaveneta.com","BSTN":"bstn.com","Bulk":"bulk.com","Burberry":"burberry.com",
+    "C.P. Company":"cpcompany.com","Canon":"canon.fr","Carhartt":"carhartt-wip.com","Carl of Carl":"carlofcarl.com","Casablanca":"casablancaparis.com","Cdiscount":"cdiscount.com","Chanel":"chanel.com","Clarks":"clarks.fr","Coach":"coach.com","Corsair":"corsair.com","COS":"cos.com","Crocs":"crocs.fr","Cultura":"cultura.com","CyberTech":"cybertek.fr",
+    "Daily Paper":"dailypaperclothing.com","Decathlon":"decathlon.fr","Diesel":"diesel.com","DJI":"dji.com","Doc Martens":"drmartens.com","Dorcel":"dorcel.com","Dream":"dream.fr","Dreame":"dreame.com","Durex":"durex.fr","Dyson":"dyson.fr",
+    "eBay":"ebay.fr","ESN":"esn.com","Espace Plaisir":"espaceplaisir.fr","Estée Lauder":"esteelauder.fr",
+    "Farfetch":"farfetch.com","Fendi":"fendi.com","Flaconi":"flaconi.de","Flexispot":"flexispot.fr","Flipper Zero":"flipperzero.one","Fossil":"fossil.com","Fursac":"fursac.com",
+    "GHD":"ghd.com","G-Shock":"gshock.com","Gertrude":"gertrude.fr","Getsgoods":"getgoods.com","Go Pro":"gopro.com","Guerlain":"guerlain.com","Gymshark":"gymshark.com",
+    "H&M":"hm.com","Helly Hansen":"hellyhansen.com","Hermès":"hermes.com","Histoire d'Or":"histoiredor.com","Hoka":"hoka.com","Home24":"home24.fr","HP":"hp.com","Hugo Boss":"hugoboss.com",
+    "iHerb":"iherb.com","Intersport":"intersport.fr","iRobot":"irobot.fr","I-Run":"i-run.fr","Izac":"izac.fr",
+    "Jack & Jones":"jackjones.com","JBL":"jbl.com","Jo Malone":"jomalone.com","Jonak":"jonak.fr",
+    "Kärcher":"kaercher.com","King Jouet":"kingjouet.com","KitchenAid":"kitchenaid.fr","K-Way":"k-way.com","Kujten":"kujten.com",
+    "La Chaise Longue":"lachaiselongue.fr","La Grande Récré":"lagranderecre.fr","La Redoute":"laredoute.fr","Lancaster":"lancaster.com","Lanvin":"lanvin.com","Le Tanneur":"letanneur.com","Ledger":"ledger.com","Lego":"lego.com","Lenovo":"lenovo.com","Levis":"levi.com","Lidl":"lidl.fr","Loewe":"loewe.com","Logitech":"logitech.com","Longchamp":"longchamp.com","Lululemon":"lululemon.com","Lyle & Scott":"lyleandscott.com",
+    "Maison Francis Kurkdjian":"franciskurkdjian.com","Maje":"maje.com","Mango":"mango.com","Mano Mano":"manomano.fr","Manscaped":"manscaped.com","Marc Orian":"marcorian.com","Massimo Dutti":"massimodutti.com","Maty":"maty.com","MaxCoffee":"maxicoffee.com","MaxGaming":"maxgaming.com","Maxiscoot":"maxiscoot.com","Media Markt":"mediamarkt.de","Merrell":"merrell.com","Michael Kors":"michaelkors.com","Microsoft":"microsoft.com","Millet":"millet-mountain.com","Moncler":"moncler.com","Montblanc":"montblanc.com","Montec":"montecwear.com","Moulinex":"moulinex.fr","My Origines":"myorigines.com","MyPrott":"myprotein.fr",
+    "NBA Store":"nbastore.eu","Nespresso":"nespresso.com","New Balance":"newbalance.fr","New Era":"neweracap.eu","Nike":"nike.com","Ninja":"ninjakitchen.fr","Norauto":"norauto.fr","Nudient":"nudient.com","Nutrimea":"nutrimea.com","NZXT":"nzxt.com",
+    "Ocarat":"ocarat.com","On":"on.com","Ooni":"ooni.com","Oscaro":"oscaro.com",
+    "Packmoto":"packmoto.com","Palm Angels":"palmangels.com","Pandora":"pandora.net","Parajumpers":"parajumpers.it","Philips":"philips.fr","Philips Hue":"philips-hue.com","Prada":"prada.com","PSG":"store.psg.fr","Puma":"puma.com","Pyrenex":"pyrenex.com",
+    "Rakuten":"rakuten.com","Ralph Lauren":"ralphlauren.fr","Ray-Ban":"ray-ban.com","Razer":"razer.com","RhinoShield":"rhinoshield.fr","Rimowa":"rimowa.com","Rituals":"rituals.com","Rowenta":"rowenta.fr",
+    "Salomon":"salomon.com","Samsonite":"samsonite.fr","Sandro":"sandro-paris.com","Sarenza":"sarenza.com","Saucony":"saucony.com","Scuf Gaming":"scufgaming.com","Secret Lab":"secretlab.co","Selfridges":"selfridges.com","Sephora":"sephora.fr","Shein":"shein.com","Shark Clean":"sharkclean.fr","Simba Matelas":"simbamatelas.fr","Skims":"skims.com","Snipes":"snipes.fr","Sonos":"sonos.com","Spartoo":"spartoo.com","Steelseries":"steelseries.com","Stihl":"stihl.fr","Superdry":"superdry.com","Sunglass Hut":"sunglasshut.com","Swarovski":"swarovski.com",
+    "Tag Heuer":"tagheuer.com","Tefal":"tefal.fr","Temu":"temu.com","The Kooples":"thekooples.com","Thomann":"thomann.de","Tineco":"tineco.com","Top4running":"top4running.fr","Trezor":"trezor.io",
+    "UGG":"ugg.com","Uniqlo":"uniqlo.com","Urban Outfitters":"urbanoutfitters.com",
+    "Vanden Borre":"vandenborre.be","Venum":"venum.com","Verbaudet":"vertbaudet.fr","Versace":"versace.com","Victoria's Secret":"victoriassecret.com","Vitality":"vitality.gg",
+    "Wooting":"wooting.io","Wopilo":"wopilo.com",
+    "Xiaomi":"xiaomi.com",
+    "Zadig & Voltaire":"zadig-et-voltaire.com","Zalando":"zalando.fr","Zara":"zara.com","Zooplus":"zooplus.fr"
+  };
+  const modalConditions = document.getElementById('modalConditions');
+  const modalCommission = document.getElementById('modalCommission');
+  const modalDelai = document.getElementById('modalDelai');
+
+  // Add "Tous" button
+  const allBtn = document.createElement('button');
+  allBtn.classList.add('filter-btn', 'active');
+  allBtn.textContent = 'Tous';
+  allBtn.addEventListener('click', () => filterShops('all'));
+  filterContainer.appendChild(allBtn);
+
+  // Add letter buttons
+  letters.forEach(letter => {
+    const btn = document.createElement('button');
+    btn.classList.add('filter-btn');
+    btn.textContent = letter;
+    btn.addEventListener('click', () => filterShops(letter));
+    filterContainer.appendChild(btn);
+  });
+
+  // Logo URL helper
+  function getLogoUrl(domain) {
+    return `https://www.google.com/s2/favicons?sz=64&domain=${domain}`;
+  }
+
+  // Render boutiques
+  boutiques.sort().forEach(name => {
+    const el = document.createElement('div');
+    el.classList.add('boutique-item');
+    const domain = shopDomains[name];
+    if (domain) {
+      const img = document.createElement('img');
+      img.src = getLogoUrl(domain);
+      img.alt = '';
+      img.classList.add('boutique-logo');
+      img.onerror = function() {
+        // Replace with initial on error
+        const init = document.createElement('div');
+        init.classList.add('boutique-initial');
+        init.textContent = name[0].toUpperCase();
+        this.replaceWith(init);
+      };
+      el.appendChild(img);
+    } else {
+      const init = document.createElement('div');
+      init.classList.add('boutique-initial');
+      init.textContent = name[0].toUpperCase();
+      el.appendChild(init);
+    }
+    const span = document.createElement('span');
+    span.textContent = name;
+    el.appendChild(span);
+    el.dataset.letter = name[0].toUpperCase();
+    el.addEventListener('click', () => openShopModal(name));
+    grid.appendChild(el);
+  });
+
+  countEl.textContent = boutiques.length;
+
+  function filterShops(letter) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    if (letter === 'all') {
+      filterContainer.firstChild.classList.add('active');
+    } else {
+      [...filterContainer.children].find(b => b.textContent === letter)?.classList.add('active');
+    }
+
+    let count = 0;
+    document.querySelectorAll('.boutique-item').forEach(item => {
+      if (letter === 'all' || item.dataset.letter === letter) {
+        item.classList.remove('hidden');
+        count++;
+      } else {
+        item.classList.add('hidden');
+      }
+    });
+    countEl.textContent = count;
+  }
+
+  // ===== MODAL LOGIC =====
+  function openShopModal(name) {
+    const details = shopDetails[name];
+    modalName.textContent = name;
+
+    // Set logo
+    const domain = shopDomains[name];
+    if (domain) {
+      modalLogo.src = getLogoUrl(domain);
+      modalLogo.style.display = 'block';
+      modalLogoInitial.style.display = 'none';
+      modalLogo.onerror = function() {
+        this.style.display = 'none';
+        modalLogoInitial.textContent = name[0].toUpperCase();
+        modalLogoInitial.style.display = 'flex';
+      };
+    } else {
+      modalLogo.style.display = 'none';
+      modalLogoInitial.textContent = name[0].toUpperCase();
+      modalLogoInitial.style.display = 'flex';
+    }
+
+    if (details) {
+      modalBadge.textContent = '✅ Boutique vérifiée';
+      modalBadge.style.color = 'var(--gold)';
+      modalBadge.style.borderColor = 'rgba(255, 215, 0, 0.2)';
+      modalBadge.style.background = 'rgba(255, 215, 0, 0.1)';
+      modalDesc.textContent = 'Boutique disponible — consultez les conditions ci-dessous.';
+      modalConditions.innerHTML = details.conditions.map(c => `<li>${c}</li>`).join('');
+      modalCommission.textContent = '25% (Anticipée) — 30% (Confort)';
+      modalDelai.textContent = details.delai;
+    } else {
+      modalBadge.textContent = '⏳ Détails à venir';
+      modalBadge.style.color = 'rgba(255,253,247,0.5)';
+      modalBadge.style.borderColor = 'rgba(255,253,247,0.1)';
+      modalBadge.style.background = 'rgba(255,255,255,0.05)';
+      modalDesc.textContent = 'Les conditions de cette boutique seront ajoutées prochainement.';
+      modalConditions.innerHTML = '<li>Contactez le support pour plus d\'infos</li>';
+      modalCommission.textContent = '25% — 30%';
+      modalDelai.textContent = 'Contactez @Gear5RF';
+    }
+
+    modal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    modal.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  modalClose.addEventListener('click', closeModal);
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) closeModal();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeModal();
+  });
+</script>
+
+</body>
+</html>
