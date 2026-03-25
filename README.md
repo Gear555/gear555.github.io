@@ -1,4 +1,4 @@
-# Gear5RF-site[index.html.html](https://github.com/user-attachments/files/26249012/index.html.html)
+# Gear5RF-site[index.html](https://github.com/user-attachments/files/26249012/index.html)
 <!DOCTYPE html>
 <html lang="fr">
 <head>
