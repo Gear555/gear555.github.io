@@ -338,6 +338,15 @@
     box-shadow: 0 8px 40px rgba(255, 215, 0, 0.5);
   }
 
+  .btn-telegram .tg-icon {
+    width: 1.3em;
+    height: 1.3em;
+    vertical-align: middle;
+    margin-right: 0.3rem;
+    margin-top: -2px;
+    flex-shrink: 0;
+  }
+
   .btn-secondary {
     background: transparent;
     color: var(--white);
@@ -348,71 +357,6 @@
     border-color: var(--gold);
     color: var(--gold);
     transform: translateY(-3px);
-  }
-
-  /* ===== QUICK NAV BAR ===== */
-  .quick-nav {
-    position: sticky;
-    top: 65px;
-    z-index: 900;
-    display: flex;
-    justify-content: center;
-    gap: 0.5rem;
-    padding: 0.8rem 1.5rem;
-    background: rgba(22, 33, 62, 0.92);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid rgba(255, 215, 0, 0.08);
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-  }
-
-  .quick-nav::-webkit-scrollbar { display: none; }
-
-  .quick-nav-item {
-    flex-shrink: 0;
-    padding: 0.45rem 1.1rem;
-    border-radius: 50px;
-    font-size: 0.8rem;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-    text-decoration: none;
-    color: rgba(255, 253, 247, 0.55);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    background: rgba(255, 255, 255, 0.03);
-    transition: all 0.3s;
-    white-space: nowrap;
-  }
-
-  .quick-nav-item:hover {
-    color: var(--gold);
-    border-color: rgba(255, 215, 0, 0.3);
-    background: rgba(255, 215, 0, 0.06);
-  }
-
-  .quick-nav-item.active {
-    color: var(--dark);
-    background: var(--gold);
-    border-color: var(--gold);
-  }
-
-  .quick-nav-cta {
-    color: var(--gold);
-    border-color: rgba(255, 215, 0, 0.3);
-    background: rgba(255, 215, 0, 0.08);
-  }
-
-  .quick-nav-cta:hover {
-    background: var(--gold);
-    color: var(--dark);
-  }
-
-  @media (max-width: 768px) {
-    .quick-nav {
-      justify-content: flex-start;
-      padding: 0.6rem 1rem;
-      top: 56px;
-    }
   }
 
   /* ===== SECTION SHARED ===== */
@@ -464,37 +408,45 @@
     justify-content: center;
   }
 
-  .gear5-orb {
-    width: 280px;
-    height: 280px;
-    border-radius: 50%;
-    background: radial-gradient(circle at 30% 30%, var(--neon-gold), var(--gold-dark), var(--red));
-    box-shadow:
-      0 0 60px rgba(255, 215, 0, 0.4),
-      0 0 120px rgba(255, 215, 0, 0.2),
-      inset 0 0 60px rgba(255, 255, 255, 0.1);
-    animation: orbFloat 6s ease-in-out infinite;
+  .about-avatar-wrap {
     position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
-  .gear5-orb::after {
-    content: '🔥';
+  .about-avatar-img {
+    width: 300px;
+    height: auto;
+    border-radius: 20px;
+    position: relative;
+    z-index: 2;
+    filter: drop-shadow(0 0 30px rgba(255, 215, 0, 0.3)) drop-shadow(0 0 60px rgba(230, 57, 70, 0.15));
+    animation: aboutFloat 5s ease-in-out infinite;
+  }
+
+  .about-avatar-glow {
     position: absolute;
-    font-size: 4rem;
     top: 50%;
     left: 50%;
+    width: 120%;
+    height: 120%;
     transform: translate(-50%, -50%);
-    animation: iconPulse 2s ease-in-out infinite;
+    background: radial-gradient(circle, rgba(255, 215, 0, 0.18) 0%, rgba(230, 57, 70, 0.06) 50%, transparent 70%);
+    border-radius: 50%;
+    z-index: 1;
+    animation: aboutGlow 3s ease-in-out infinite;
   }
 
-  @keyframes orbFloat {
-    0%, 100% { transform: translateY(0) scale(1); }
-    50% { transform: translateY(-20px) scale(1.05); }
+  @keyframes aboutFloat {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    25% { transform: translateY(-12px) rotate(1deg); }
+    75% { transform: translateY(8px) rotate(-1deg); }
   }
 
-  @keyframes iconPulse {
-    0%, 100% { transform: translate(-50%, -50%) scale(1); }
-    50% { transform: translate(-50%, -50%) scale(1.15); }
+  @keyframes aboutGlow {
+    0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
+    50% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
   }
 
   .orbit-particle {
@@ -995,41 +947,67 @@
   }
 
   /* ===== STATS ===== */
+  /* ===== STATS MARQUEE ===== */
   #stats {
     background: linear-gradient(135deg, var(--dark), var(--purple-dark));
-    padding: 6rem 2rem;
+    padding: 0;
+    overflow: hidden;
+    border-top: 1px solid rgba(255, 215, 0, 0.08);
+    border-bottom: 1px solid rgba(255, 215, 0, 0.08);
   }
 
-  .stats-grid {
-    max-width: 1000px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 2rem;
-    text-align: center;
+  .stats-marquee {
+    display: flex;
+    animation: marqueeScroll 20s linear infinite;
+    width: max-content;
+  }
+
+  .stats-marquee:hover {
+    animation-play-state: paused;
+  }
+
+  .stats-track {
+    display: flex;
+    flex-shrink: 0;
   }
 
   .stat-item {
-    padding: 2rem 1rem;
-    border-radius: 16px;
-    border: 1px solid rgba(255, 215, 0, 0.08);
-    background: rgba(255, 255, 255, 0.02);
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 1.1rem 2.5rem;
+    white-space: nowrap;
+    border-right: 1px solid rgba(255, 215, 0, 0.06);
   }
 
   .stat-number {
     font-family: 'Bangers', cursive;
-    font-size: 3rem;
+    font-size: 2rem;
     color: var(--gold);
     line-height: 1;
-    margin-bottom: 0.5rem;
+    text-shadow: 0 0 20px rgba(255, 215, 0, 0.25);
   }
 
   .stat-label {
-    font-size: 0.85rem;
+    font-size: 0.75rem;
     font-weight: 600;
-    letter-spacing: 2px;
+    letter-spacing: 1.5px;
     text-transform: uppercase;
-    color: rgba(255, 253, 247, 0.5);
+    color: rgba(255, 253, 247, 0.45);
+  }
+
+  .stat-dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--gold);
+    opacity: 0.3;
+    flex-shrink: 0;
+  }
+
+  @keyframes marqueeScroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
   }
 
   /* ===== PROCESS ===== */
@@ -1177,6 +1155,301 @@
     100% { transform: translateY(-10vh) scale(1); opacity: 0; }
   }
 
+  /* ===== SIMULATOR ===== */
+  .sim-search-wrap {
+    position: relative;
+  }
+
+  .sim-input {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 215, 0, 0.15);
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--white);
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.3s;
+  }
+
+  .sim-input:focus {
+    border-color: var(--gold);
+  }
+
+  .sim-input::placeholder {
+    color: rgba(255, 253, 247, 0.3);
+  }
+
+  .sim-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0; right: 0;
+    max-height: 220px;
+    overflow-y: auto;
+    background: var(--purple-dark);
+    border: 1px solid rgba(255, 215, 0, 0.15);
+    border-top: none;
+    border-radius: 0 0 12px 12px;
+    z-index: 100;
+    display: none;
+  }
+
+  .sim-dropdown.open { display: block; }
+
+  .sim-dropdown-item {
+    padding: 0.6rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: rgba(255, 253, 247, 0.7);
+    transition: background 0.2s;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+  }
+
+  .sim-dropdown-item:hover {
+    background: rgba(255, 215, 0, 0.08);
+    color: var(--gold);
+  }
+
+  .sim-dropdown-item img {
+    width: 20px; height: 20px;
+    border-radius: 4px;
+    background: rgba(255,255,255,0.9);
+    padding: 1px;
+    object-fit: contain;
+  }
+
+  .sim-selected-shop {
+    margin-top: 0.8rem;
+    padding: 0.7rem 1rem;
+    background: rgba(255, 215, 0, 0.06);
+    border: 1px solid rgba(255, 215, 0, 0.2);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    color: var(--gold);
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+
+  .sim-selected-shop img {
+    width: 28px; height: 28px;
+    border-radius: 6px;
+    background: rgba(255,255,255,0.9);
+    padding: 2px;
+    object-fit: contain;
+  }
+
+  .sim-selected-shop .sim-remove {
+    margin-left: auto;
+    cursor: pointer;
+    opacity: 0.5;
+    transition: opacity 0.3s;
+  }
+
+  .sim-selected-shop .sim-remove:hover { opacity: 1; }
+
+  .sim-price-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .sim-price-input {
+    flex: 1;
+    -moz-appearance: textfield;
+  }
+
+  .sim-price-input::-webkit-outer-spin-button,
+  .sim-price-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+  }
+
+  .sim-currency {
+    font-family: 'Bangers', cursive;
+    font-size: 1.5rem;
+    color: var(--gold);
+  }
+
+  .sim-slider {
+    width: 100%;
+    margin-top: 0.8rem;
+    -webkit-appearance: none;
+    height: 4px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    outline: none;
+  }
+
+  .sim-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: var(--gold);
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
+  }
+
+  .sim-slider::-moz-range-thumb {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: var(--gold);
+    cursor: pointer;
+    border: none;
+  }
+
+  .sim-price-hint {
+    font-size: 0.8rem;
+    color: rgba(255, 253, 247, 0.35);
+    margin-top: 0.4rem;
+  }
+
+  .sim-result {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 215, 0, 0.1);
+    border-radius: 16px;
+    padding: 1.2rem 1.5rem;
+    margin-top: 1.5rem;
+  }
+
+  .sim-result-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    font-size: 0.92rem;
+    color: rgba(255, 253, 247, 0.65);
+  }
+
+  .sim-val {
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--white);
+  }
+
+  .sim-result-divider {
+    height: 1px;
+    background: rgba(255, 215, 0, 0.12);
+    margin: 0.5rem 0;
+  }
+
+  .sim-result-total {
+    font-size: 1.05rem;
+  }
+
+  .sim-result-total .sim-val {
+    font-family: 'Bangers', cursive;
+    font-size: 1.4rem;
+    letter-spacing: 1px;
+  }
+
+  .sim-option-row {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .sim-option-btn {
+    flex: 1;
+    min-width: 0;
+    padding: 0.6rem 0.8rem;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 215, 0, 0.12);
+    background: rgba(255, 255, 255, 0.03);
+    color: rgba(255, 253, 247, 0.5);
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    white-space: nowrap;
+  }
+
+  .sim-option-btn:hover {
+    border-color: rgba(255, 215, 0, 0.3);
+    color: var(--gold);
+  }
+
+  .sim-option-btn.active {
+    background: rgba(255, 215, 0, 0.1);
+    border-color: var(--gold);
+    color: var(--gold);
+    box-shadow: 0 0 12px rgba(255, 215, 0, 0.12);
+  }
+
+  .sim-pay-logo {
+    width: 18px;
+    height: 18px;
+    border-radius: 4px;
+    object-fit: contain;
+    background: rgba(255,255,255,0.9);
+    padding: 1px;
+  }
+
+  .sim-recap-shop {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .sim-shop-preview {
+    margin-top: 0.8rem;
+    padding: 1rem 1.2rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 215, 0, 0.1);
+    border-radius: 14px;
+    animation: fadeSlideUp 0.3s both;
+  }
+
+  .sim-preview-title {
+    font-family: 'Bangers', cursive;
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+    color: var(--white);
+    margin-bottom: 0.5rem;
+  }
+
+  .sim-shop-preview ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 0.6rem 0;
+  }
+
+  .sim-shop-preview ul li {
+    padding: 0.25rem 0;
+    font-size: 0.82rem;
+    color: rgba(255, 253, 247, 0.6);
+    font-weight: 300;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  }
+
+  .sim-shop-preview ul li::before {
+    content: '▸ ';
+    color: var(--gold);
+  }
+
+  .sim-preview-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    color: rgba(255, 253, 247, 0.6);
+    padding-top: 0.3rem;
+  }
+
+  .sim-preview-row span:last-child {
+    color: var(--gold);
+    font-weight: 600;
+  }
+
   /* ===== MOBILE ===== */
   .mobile-toggle {
     display: none;
@@ -1219,9 +1492,8 @@
     }
 
     .about-grid { grid-template-columns: 1fr; }
-    .about-visual { height: 280px; }
-    .gear5-orb { width: 200px; height: 200px; }
-    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    .about-visual { height: 300px; }
+    .about-avatar-img { width: 220px; }
 
     .hero-split {
       flex-direction: column-reverse;
@@ -1256,7 +1528,7 @@
     <li><a href="#services">Avantages</a></li>
     <li><a href="#boutiques">Boutiques</a></li>
     <li><a href="#pricing">Tarifs</a></li>
-    <li><a href="#process">Process</a></li>
+    <li><a href="#process">Procédé</a></li>
     <li><a href="#cta">Contact</a></li>
   </ul>
 </nav>
@@ -1276,9 +1548,9 @@
       <p>Assez des commandes trop chères, des délais interminables et des démarches compliquées ? Ici, tout est pensé pour vous simplifier la vie — récupérez votre argent rapidement, facilement et en toute tranquillité.</p>
       <div class="hero-buttons">
         <a href="#boutiques" class="btn btn-primary">🛍️ Voir les boutiques</a>
-        <a href="#process" class="btn btn-secondary">⚙️ Le process</a>
+        <a href="#process" class="btn btn-secondary">⚙️ Le Procédé</a>
         <a href="#pricing" class="btn btn-secondary">💰 Tarifs</a>
-        <a href="https://t.me/+P3jXwDHAhlc0NWI0" class="btn btn-primary" target="_blank">📱 @Gear5RF</a>
+        <a href="https://t.me/+P3jXwDHAhlc0NWI0" class="btn btn-primary btn-telegram" target="_blank"><svg class="tg-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 1 0 24 12.056A12.014 12.014 0 0 0 11.944 0ZM16.906 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472c-.18 1.898-.962 6.502-1.36 8.627c-.168.9-.499 1.201-.82 1.23c-.696.065-1.225-.46-1.9-.902c-1.056-.693-1.653-1.124-2.678-1.8c-1.185-.78-.417-1.21.258-1.91c.177-.184 3.247-2.977 3.307-3.23c.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345c-.48.33-.913.492-1.302.48c-.428-.008-1.252-.241-1.865-.44c-.752-.245-1.349-.374-1.297-.789c.027-.216.325-.437.893-.663c3.498-1.524 5.83-2.529 6.998-3.014c3.332-1.386 4.025-1.627 4.476-1.635Z"/></svg> @Gear5RF</a>
       </div>
     </div>
     <div class="hero-avatar">
@@ -1290,16 +1562,6 @@
   </div>
 </section>
 
-<!-- Quick Nav Bar -->
-<div class="quick-nav" id="quickNav">
-  <a href="#about" class="quick-nav-item">⚡ À propos</a>
-  <a href="#services" class="quick-nav-item">🛡 Avantages</a>
-  <a href="#boutiques" class="quick-nav-item">🛍️ Boutiques</a>
-  <a href="#pricing" class="quick-nav-item">💰 Tarifs</a>
-  <a href="#process" class="quick-nav-item">📇 Process</a>
-  <a href="https://t.me/+P3jXwDHAhlc0NWI0" class="quick-nav-item quick-nav-cta" target="_blank">📱 Contact</a>
-</div>
-
 <!-- About -->
 <section id="about">
   <div class="section-header reveal">
@@ -1308,7 +1570,10 @@
   </div>
   <div class="about-grid">
     <div class="about-visual reveal">
-      <div class="gear5-orb"></div>
+      <div class="about-avatar-wrap">
+        <div class="about-avatar-glow"></div>
+        <img src="avatar-gear5.png" alt="Gear 5" class="about-avatar-img" />
+      </div>
       <div class="orbit-particle"></div>
       <div class="orbit-particle"></div>
       <div class="orbit-particle"></div>
@@ -1317,7 +1582,7 @@
       <h3>Pourquoi nous confier vos dossiers ?</h3>
       <p>Gear 5 redéfinit les règles du jeu. Nous mettons notre expertise à votre service pour simplifier vos Refund, adaptés à chaque shop. Avec un taux de réussite de 98 % après 2 ans de pratique intensive, votre succès est notre priorité.</p>
       <p>Consultez la section explicative des étapes, parcourez la liste des boutiques disponibles, puis passez commande pour lancer votre refund en toute confiance.</p>
-      <a href="#process" class="btn btn-primary" style="margin-top: 1.5rem;">Voir le process →</a>
+      <a href="#process" class="btn btn-primary" style="margin-top: 1.5rem;">Voir le procédé →</a>
     </div>
   </div>
 </section>
@@ -1347,24 +1612,82 @@
   </div>
 </section>
 
-<!-- Stats -->
+<!-- Stats Marquee -->
 <section id="stats">
-  <div class="stats-grid">
-    <div class="stat-item reveal">
-      <div class="stat-number" data-target="98">0</div>
-      <div class="stat-label">% Taux de réussite</div>
+  <div class="stats-marquee">
+    <div class="stats-track">
+      <div class="stat-item">
+        <div class="stat-number" data-target="98">0</div>
+        <div class="stat-label">% Taux de réussite</div>
+      </div>
+      <div class="stat-dot"></div>
+      <div class="stat-item">
+        <div class="stat-number" data-target="2">0</div>
+        <div class="stat-label">Ans d'expérience</div>
+      </div>
+      <div class="stat-dot"></div>
+      <div class="stat-item">
+        <div class="stat-number" data-target="100">0</div>
+        <div class="stat-label">+ Boutiques testées</div>
+      </div>
+      <div class="stat-dot"></div>
+      <div class="stat-item">
+        <div class="stat-number" data-target="7">0</div>
+        <div class="stat-label">j/7 Support réactif</div>
+      </div>
+      <div class="stat-dot"></div>
+      <div class="stat-item">
+        <div class="stat-number">⚡</div>
+        <div class="stat-label">Gear 5 Power</div>
+      </div>
+      <div class="stat-dot"></div>
+      <div class="stat-item">
+        <div class="stat-number">🛡</div>
+        <div class="stat-label">Données sécurisées</div>
+      </div>
+      <div class="stat-dot"></div>
+      <div class="stat-item">
+        <div class="stat-number">🔥</div>
+        <div class="stat-label">Refund Garantis</div>
+      </div>
+      <div class="stat-dot"></div>
     </div>
-    <div class="stat-item reveal">
-      <div class="stat-number" data-target="2">0</div>
-      <div class="stat-label">Ans d'expérience</div>
-    </div>
-    <div class="stat-item reveal">
-      <div class="stat-number" data-target="100">0</div>
-      <div class="stat-label">+ Boutiques testées</div>
-    </div>
-    <div class="stat-item reveal">
-      <div class="stat-number" data-target="7">0</div>
-      <div class="stat-label">j/7 Support réactif</div>
+    <div class="stats-track" aria-hidden="true">
+      <div class="stat-item">
+        <div class="stat-number">98</div>
+        <div class="stat-label">% Taux de réussite</div>
+      </div>
+      <div class="stat-dot"></div>
+      <div class="stat-item">
+        <div class="stat-number">2</div>
+        <div class="stat-label">Ans d'expérience</div>
+      </div>
+      <div class="stat-dot"></div>
+      <div class="stat-item">
+        <div class="stat-number">100</div>
+        <div class="stat-label">+ Boutiques testées</div>
+      </div>
+      <div class="stat-dot"></div>
+      <div class="stat-item">
+        <div class="stat-number">7</div>
+        <div class="stat-label">j/7 Support réactif</div>
+      </div>
+      <div class="stat-dot"></div>
+      <div class="stat-item">
+        <div class="stat-number">⚡</div>
+        <div class="stat-label">Gear 5 Power</div>
+      </div>
+      <div class="stat-dot"></div>
+      <div class="stat-item">
+        <div class="stat-number">🛡</div>
+        <div class="stat-label">Données sécurisées</div>
+      </div>
+      <div class="stat-dot"></div>
+      <div class="stat-item">
+        <div class="stat-number">🔥</div>
+        <div class="stat-label">Refund Garantis</div>
+      </div>
+      <div class="stat-dot"></div>
     </div>
   </div>
 </section>
@@ -1432,7 +1755,7 @@
         <li>✅ Support 7j/7</li>
         <li>✅ Données sécurisées</li>
       </ul>
-      <a href="https://t.me/+P3jXwDHAhlc0NWI0" class="btn btn-primary" target="_blank">Choisir ⚡</a>
+      <button class="btn btn-primary" onclick="openSimulator(25)">Simuler ma commission ⚡</button>
     </div>
     <div class="pricing-card pricing-card-highlight reveal">
       <div class="pricing-badge">Confort</div>
@@ -1445,7 +1768,7 @@
         <li>✅ Support 7j/7</li>
         <li>✅ Zéro risque financier</li>
       </ul>
-      <a href="https://t.me/+P3jXwDHAhlc0NWI0" class="btn btn-primary" target="_blank">Choisir ⚡</a>
+      <button class="btn btn-primary" onclick="openSimulator(30)">Simuler ma commission ⚡</button>
     </div>
   </div>
   <div class="pricing-example reveal">
@@ -1469,7 +1792,7 @@
   <div class="reveal">
     <h2><span style="color: var(--gold)">Prêt</span> à lancer<br>votre <span style="color: var(--red)">Refund</span> ?</h2>
     <p>Contactez le support pour démarrer votre dossier en toute confiance.</p>
-    <a href="https://t.me/+P3jXwDHAhlc0NWI0" class="btn btn-primary" style="font-size: 1.1rem; padding: 1.2rem 3rem;" target="_blank">📱 Contacter @Gear5RF ⚡</a>
+    <a href="https://t.me/+P3jXwDHAhlc0NWI0" class="btn btn-primary btn-telegram" style="font-size: 1.1rem; padding: 1.2rem 3rem;" target="_blank"><svg class="tg-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 1 0 24 12.056A12.014 12.014 0 0 0 11.944 0ZM16.906 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472c-.18 1.898-.962 6.502-1.36 8.627c-.168.9-.499 1.201-.82 1.23c-.696.065-1.225-.46-1.9-.902c-1.056-.693-1.653-1.124-2.678-1.8c-1.185-.78-.417-1.21.258-1.91c.177-.184 3.247-2.977 3.307-3.23c.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345c-.48.33-.913.492-1.302.48c-.428-.008-1.252-.241-1.865-.44c-.752-.245-1.349-.374-1.297-.789c.027-.216.325-.437.893-.663c3.498-1.524 5.83-2.529 6.998-3.014c3.332-1.386 4.025-1.627 4.476-1.635Z"/></svg> Contacter @Gear5RF ⚡</a>
   </div>
 </section>
 
@@ -1514,6 +1837,165 @@
 
     <div class="modal-cta">
       <a href="https://t.me/+P3jXwDHAhlc0NWI0" class="btn btn-primary" target="_blank">Lancer le refund ⚡</a>
+    </div>
+  </div>
+</div>
+
+<!-- Simulateur de Commission -->
+<div class="modal-overlay" id="simModal">
+  <div class="modal-card" style="max-width: 580px;">
+    <button class="modal-close" onclick="closeSimulator()">✕</button>
+
+    <!-- Étape 1 : Sélection -->
+    <div id="simStep1">
+      <div class="modal-shop-name" style="font-size:1.6rem; margin-bottom:0.3rem;">💰 Simulateur de Commission</div>
+      <div class="modal-badge" id="simFormulaBadge">Formule 25%</div>
+
+      <div class="modal-section">
+        <div class="modal-section-title">🛍️ Choisir une boutique</div>
+        <div class="sim-search-wrap">
+          <input type="text" id="simSearch" class="sim-input" placeholder="Rechercher une boutique..." autocomplete="off" />
+          <div class="sim-dropdown" id="simDropdown"></div>
+        </div>
+        <div id="simSelectedShop" class="sim-selected-shop" style="display:none;"></div>
+        <div id="simShopPreview" class="sim-shop-preview" style="display:none;">
+          <div class="sim-preview-title">⚙️ Conditions</div>
+          <ul id="simPreviewConditions"></ul>
+          <div class="sim-preview-row">
+            <span>⏱️ Délai :</span>
+            <span id="simPreviewDelai">—</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-section">
+        <div class="modal-section-title">💶 Montant du panier</div>
+        <div class="sim-price-row">
+          <input type="number" id="simPrice" class="sim-input sim-price-input" placeholder="Ex: 500" min="1" />
+          <span class="sim-currency">€</span>
+        </div>
+        <input type="range" id="simSlider" class="sim-slider" min="10" max="7000" value="500" step="10" />
+        <div class="sim-price-hint" id="simMaxHint"></div>
+      </div>
+
+      <div class="modal-section">
+        <div class="modal-section-title">📦 Nom du produit</div>
+        <input type="text" id="simProduct" class="sim-input" placeholder="Ex: Nike Air Max 90, iPhone 16..." />
+      </div>
+
+      <div class="modal-section">
+        <div class="modal-section-title">🚚 Mode de livraison</div>
+        <div class="sim-option-row">
+          <button class="sim-option-btn active" onclick="selectOption(this, 'simDelivery', 'Domicile')">🏠 Domicile</button>
+          <button class="sim-option-btn" onclick="selectOption(this, 'simDelivery', 'Point relais')">📍 Point relais</button>
+        </div>
+        <input type="hidden" id="simDelivery" value="Domicile" />
+      </div>
+
+      <div class="modal-section">
+        <div class="modal-section-title">💳 Moyen de paiement</div>
+        <div class="sim-option-row">
+          <button class="sim-option-btn sim-pay-btn active" onclick="selectOption(this, 'simPayment', 'Revolut')">
+            <img src="https://logo.clearbit.com/revolut.com" class="sim-pay-logo" onerror="this.style.display='none'" /> Revolut
+          </button>
+          <button class="sim-option-btn sim-pay-btn" onclick="selectOption(this, 'simPayment', 'PayPal')">
+            <img src="https://logo.clearbit.com/paypal.com" class="sim-pay-logo" onerror="this.style.display='none'" /> PayPal
+          </button>
+          <button class="sim-option-btn sim-pay-btn" onclick="selectOption(this, 'simPayment', 'Crypto')">
+            <span style="font-size:1.1rem;">₿</span> Crypto
+          </button>
+        </div>
+        <input type="hidden" id="simPayment" value="Revolut" />
+      </div>
+
+      <div id="simResult" class="sim-result" style="display:none;">
+        <div class="sim-result-row">
+          <span>Montant du panier</span>
+          <span id="simResPrice" class="sim-val">—</span>
+        </div>
+        <div class="sim-result-row">
+          <span>Commission (<span id="simResPercent">25</span>%)</span>
+          <span id="simResCommission" class="sim-val" style="color:var(--red);">—</span>
+        </div>
+        <div class="sim-result-divider"></div>
+        <div class="sim-result-row sim-result-total">
+          <span>🎁 Vous gardez</span>
+          <span id="simResKeep" class="sim-val" style="color:var(--gold);">—</span>
+        </div>
+      </div>
+
+      <button class="btn btn-primary" style="width:100%; margin-top:1.2rem;" id="simNextBtn" onclick="goToSimStep2()" disabled>Voir le récapitulatif ⚡</button>
+    </div>
+
+    <!-- Étape 2 : Récap boutique + Confirmer -->
+    <div id="simStep2" style="display:none;">
+      <div class="modal-shop-name" style="font-size:1.6rem; margin-bottom:1rem;">📋 Récapitulatif</div>
+
+      <div class="sim-recap-shop">
+        <img id="simRecapLogo" class="modal-logo" src="" alt="" style="width:48px;height:48px;border-radius:12px;" />
+        <div id="simRecapInitial" class="modal-logo-initial" style="width:48px;height:48px;font-size:1.3rem;display:none;"></div>
+        <div>
+          <div id="simRecapName" style="font-family:'Bangers',cursive;font-size:1.4rem;letter-spacing:2px;color:var(--gold);"></div>
+          <div id="simRecapBadge" class="modal-badge" style="margin-bottom:0;">✅ Boutique vérifiée</div>
+        </div>
+      </div>
+
+      <div class="modal-divider"></div>
+
+      <div class="modal-section">
+        <div class="modal-section-title">⚙️ Conditions de la boutique</div>
+        <ul id="simRecapConditions"></ul>
+      </div>
+
+      <div class="modal-divider"></div>
+
+      <div class="modal-section">
+        <div class="modal-section-title">⏱️ Délai estimé</div>
+        <p id="simRecapDelai">—</p>
+      </div>
+
+      <div class="modal-divider"></div>
+
+      <div class="sim-result" style="display:block;">
+        <div class="sim-result-row">
+          <span>Boutique</span>
+          <span id="simRecapShopName2" class="sim-val">—</span>
+        </div>
+        <div class="sim-result-row">
+          <span>Produit</span>
+          <span id="simRecapProduct" class="sim-val">—</span>
+        </div>
+        <div class="sim-result-row">
+          <span>Montant du panier</span>
+          <span id="simRecapPrice" class="sim-val">—</span>
+        </div>
+        <div class="sim-result-row">
+          <span>Formule</span>
+          <span id="simRecapFormula" class="sim-val">—</span>
+        </div>
+        <div class="sim-result-row">
+          <span>Commission</span>
+          <span id="simRecapCommission" class="sim-val" style="color:var(--red);">—</span>
+        </div>
+        <div class="sim-result-row">
+          <span>🚚 Livraison</span>
+          <span id="simRecapDelivery" class="sim-val">—</span>
+        </div>
+        <div class="sim-result-row">
+          <span>💳 Paiement</span>
+          <span id="simRecapPayment" class="sim-val">—</span>
+        </div>
+        <div class="sim-result-divider"></div>
+        <div class="sim-result-row sim-result-total">
+          <span>🎁 Vous gardez</span>
+          <span id="simRecapKeep" class="sim-val" style="color:var(--gold);">—</span>
+        </div>
+      </div>
+
+      <div style="display:flex; gap:0.8rem; margin-top:1.5rem;">
+        <button class="btn btn-secondary" style="flex:1;" onclick="backToSimStep1()">← Modifier</button>
+        <a id="simTelegramBtn" href="#" class="btn btn-primary btn-telegram" style="flex:2;text-align:center;" target="_blank"><svg class="tg-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 1 0 24 12.056A12.014 12.014 0 0 0 11.944 0ZM16.906 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472c-.18 1.898-.962 6.502-1.36 8.627c-.168.9-.499 1.201-.82 1.23c-.696.065-1.225-.46-1.9-.902c-1.056-.693-1.653-1.124-2.678-1.8c-1.185-.78-.417-1.21.258-1.91c.177-.184 3.247-2.977 3.307-3.23c.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345c-.48.33-.913.492-1.302.48c-.428-.008-1.252-.241-1.865-.44c-.752-.245-1.349-.374-1.297-.789c.027-.216.325-.437.893-.663c3.498-1.524 5.83-2.529 6.998-3.014c3.332-1.386 4.025-1.627 4.476-1.635Z"/></svg> Contacter sur Telegram ⚡</a>
+      </div>
     </div>
   </div>
 </div>
@@ -1584,25 +2066,6 @@
     link.addEventListener('click', () => {
       document.querySelector('.nav-links').classList.remove('open');
     });
-  });
-
-  // Quick nav scroll spy
-  const quickNavItems = document.querySelectorAll('.quick-nav-item[href^="#"]');
-  const sections = [];
-  quickNavItems.forEach(item => {
-    const id = item.getAttribute('href').substring(1);
-    const section = document.getElementById(id);
-    if (section) sections.push({ el: section, link: item });
-  });
-
-  window.addEventListener('scroll', () => {
-    const scrollPos = window.scrollY + 200;
-    let current = null;
-    sections.forEach(s => {
-      if (s.el.offsetTop <= scrollPos) current = s;
-    });
-    quickNavItems.forEach(i => i.classList.remove('active'));
-    if (current) current.link.classList.add('active');
   });
 
   // ===== BOUTIQUES LIST =====
@@ -1969,8 +2432,259 @@
     if (e.target === modal) closeModal();
   });
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') closeModal();
+    if (e.key === 'Escape') { closeModal(); closeSimulator(); }
   });
+
+  // ===== SIMULATOR =====
+  const simModal = document.getElementById('simModal');
+  const simSearch = document.getElementById('simSearch');
+  const simDropdown = document.getElementById('simDropdown');
+  const simSelectedShop = document.getElementById('simSelectedShop');
+  const simPrice = document.getElementById('simPrice');
+  const simSlider = document.getElementById('simSlider');
+  const simResult = document.getElementById('simResult');
+  const simNextBtn = document.getElementById('simNextBtn');
+  const simMaxHint = document.getElementById('simMaxHint');
+
+  let simRate = 25;
+  let simChosenShop = null;
+
+  function selectOption(btn, hiddenId, value) {
+    const row = btn.parentElement;
+    row.querySelectorAll('.sim-option-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(hiddenId).value = value;
+  }
+
+  function openSimulator(rate) {
+    simRate = rate;
+    document.getElementById('simFormulaBadge').textContent = rate === 25 ? 'Formule Anticipée — 25%' : 'Formule Confort — 30%';
+    document.getElementById('simResPercent').textContent = rate;
+    simChosenShop = null;
+    simSearch.value = '';
+    simSelectedShop.style.display = 'none';
+    document.getElementById('simShopPreview').style.display = 'none';
+    simPrice.value = '';
+    simSlider.value = 500;
+    simSlider.max = 7000;
+    simResult.style.display = 'none';
+    simNextBtn.disabled = true;
+    simMaxHint.textContent = '';
+    document.getElementById('simProduct').value = '';
+    document.getElementById('simDelivery').value = 'Domicile';
+    document.getElementById('simPayment').value = 'Revolut';
+    document.querySelectorAll('#simStep1 .sim-option-row').forEach(row => {
+      row.querySelectorAll('.sim-option-btn').forEach((b, i) => b.classList.toggle('active', i === 0));
+    });
+    document.getElementById('simStep1').style.display = 'block';
+    document.getElementById('simStep2').style.display = 'none';
+    simModal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeSimulator() {
+    simModal.classList.remove('open');
+    document.body.style.overflow = '';
+    simDropdown.classList.remove('open');
+  }
+
+  simModal.addEventListener('click', (e) => {
+    if (e.target === simModal) closeSimulator();
+  });
+
+  // Search dropdown
+  simSearch.addEventListener('input', () => {
+    const q = simSearch.value.toLowerCase().trim();
+    simDropdown.innerHTML = '';
+    if (q.length < 1) { simDropdown.classList.remove('open'); return; }
+
+    const matches = boutiques.filter(b => b.toLowerCase().includes(q)).slice(0, 15);
+    if (matches.length === 0) { simDropdown.classList.remove('open'); return; }
+
+    matches.forEach(name => {
+      const item = document.createElement('div');
+      item.classList.add('sim-dropdown-item');
+      const domain = shopDomains[name];
+      if (domain) {
+        const img = document.createElement('img');
+        img.src = getLogoUrl(domain);
+        img.onerror = function() { this.style.display = 'none'; };
+        item.appendChild(img);
+      }
+      const span = document.createElement('span');
+      span.textContent = name;
+      item.appendChild(span);
+      item.addEventListener('click', () => selectSimShop(name));
+      simDropdown.appendChild(item);
+    });
+    simDropdown.classList.add('open');
+  });
+
+  simSearch.addEventListener('focus', () => {
+    if (simSearch.value.length >= 1) simSearch.dispatchEvent(new Event('input'));
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.sim-search-wrap')) simDropdown.classList.remove('open');
+  });
+
+  function selectSimShop(name) {
+    simChosenShop = name;
+    simDropdown.classList.remove('open');
+    simSearch.value = '';
+
+    const domain = shopDomains[name];
+    let logoHtml = '';
+    if (domain) {
+      logoHtml = `<img src="${getLogoUrl(domain)}" onerror="this.style.display='none'" />`;
+    }
+    simSelectedShop.innerHTML = `${logoHtml}<span>${name}</span><span class="sim-remove" onclick="clearSimShop()">✕</span>`;
+    simSelectedShop.style.display = 'flex';
+
+    // Show boutique details preview
+    const preview = document.getElementById('simShopPreview');
+    const details = shopDetails[name];
+    if (details) {
+      document.getElementById('simPreviewConditions').innerHTML = details.conditions.map(c => `<li>${c}</li>`).join('');
+      document.getElementById('simPreviewDelai').textContent = details.delai;
+      preview.style.display = 'block';
+
+      // Update max hint
+      const maxLine = details.conditions.find(c => c.startsWith('Maximum'));
+      if (maxLine) {
+        simMaxHint.textContent = `⚡ ${maxLine}`;
+        // Update slider max
+        const maxVal = parseInt(maxLine.replace(/[^\d]/g, ''));
+        if (maxVal > 0) {
+          simSlider.max = maxVal;
+        }
+      }
+    } else {
+      document.getElementById('simPreviewConditions').innerHTML = '<li>Contactez le support pour les conditions</li>';
+      document.getElementById('simPreviewDelai').textContent = 'Contactez @Gear5RF';
+      preview.style.display = 'block';
+      simMaxHint.textContent = '';
+      simSlider.max = 7000;
+    }
+
+    updateSimResult();
+  }
+
+  function clearSimShop() {
+    simChosenShop = null;
+    simSelectedShop.style.display = 'none';
+    document.getElementById('simShopPreview').style.display = 'none';
+    simMaxHint.textContent = '';
+    simSlider.max = 7000;
+    updateSimResult();
+  }
+
+  simPrice.addEventListener('input', () => {
+    const v = parseInt(simPrice.value);
+    if (v && v > 0) simSlider.value = Math.min(v, 7000);
+    updateSimResult();
+  });
+
+  simSlider.addEventListener('input', () => {
+    simPrice.value = simSlider.value;
+    updateSimResult();
+  });
+
+  function updateSimResult() {
+    const price = parseFloat(simPrice.value);
+    if (!price || price <= 0) {
+      simResult.style.display = 'none';
+      simNextBtn.disabled = true;
+      return;
+    }
+
+    const commission = Math.round(price * simRate / 100);
+    const keep = price - commission;
+
+    document.getElementById('simResPrice').textContent = price.toLocaleString('fr-FR') + ' €';
+    document.getElementById('simResCommission').textContent = commission.toLocaleString('fr-FR') + ' €';
+    document.getElementById('simResKeep').textContent = keep.toLocaleString('fr-FR') + ' €';
+    simResult.style.display = 'block';
+    simNextBtn.disabled = !simChosenShop;
+  }
+
+  function goToSimStep2() {
+    if (!simChosenShop) return;
+    const price = parseFloat(simPrice.value);
+    if (!price || price <= 0) return;
+
+    const commission = Math.round(price * simRate / 100);
+    const keep = price - commission;
+    const details = shopDetails[simChosenShop];
+    const domain = shopDomains[simChosenShop];
+    const product = document.getElementById('simProduct').value.trim() || 'Non précisé';
+    const delivery = document.getElementById('simDelivery').value;
+    const payment = document.getElementById('simPayment').value;
+
+    // Logo
+    const recapLogo = document.getElementById('simRecapLogo');
+    const recapInit = document.getElementById('simRecapInitial');
+    if (domain) {
+      recapLogo.src = getLogoUrl(domain);
+      recapLogo.style.display = 'block';
+      recapInit.style.display = 'none';
+      recapLogo.onerror = function() {
+        this.style.display = 'none';
+        recapInit.textContent = simChosenShop[0].toUpperCase();
+        recapInit.style.display = 'flex';
+      };
+    } else {
+      recapLogo.style.display = 'none';
+      recapInit.textContent = simChosenShop[0].toUpperCase();
+      recapInit.style.display = 'flex';
+    }
+
+    document.getElementById('simRecapName').textContent = simChosenShop;
+
+    if (details) {
+      document.getElementById('simRecapBadge').textContent = '✅ Boutique vérifiée';
+      document.getElementById('simRecapConditions').innerHTML = details.conditions.map(c => `<li>${c}</li>`).join('');
+      document.getElementById('simRecapDelai').textContent = details.delai;
+    } else {
+      document.getElementById('simRecapBadge').textContent = '⏳ Détails à venir';
+      document.getElementById('simRecapConditions').innerHTML = '<li>Contactez le support pour les conditions</li>';
+      document.getElementById('simRecapDelai').textContent = 'Contactez @Gear5RF';
+    }
+
+    document.getElementById('simRecapShopName2').textContent = simChosenShop;
+    document.getElementById('simRecapProduct').textContent = product;
+    document.getElementById('simRecapPrice').textContent = price.toLocaleString('fr-FR') + ' €';
+    document.getElementById('simRecapFormula').textContent = simRate === 25 ? 'Anticipée (25%)' : 'Confort (30%)';
+    document.getElementById('simRecapCommission').textContent = commission.toLocaleString('fr-FR') + ' €';
+    document.getElementById('simRecapKeep').textContent = keep.toLocaleString('fr-FR') + ' €';
+    document.getElementById('simRecapDelivery').textContent = delivery;
+    document.getElementById('simRecapPayment').textContent = payment;
+
+    // Build Telegram pre-filled message
+    const msg = `Bonjour,
+Je viens du site.
+
+Récapitulatif de ma demande :
+
+🛍️ Boutique : ${simChosenShop}
+📦 Produit : ${product}
+💶 Montant : ${price.toLocaleString('fr-FR')} €
+🚚 Livraison : ${delivery}
+💳 Moyen de paiement : ${payment}
+💰 Formule : ${simRate === 25 ? 'Anticipée (25%)' : 'Confort (30%)'}
+💸 Commission : ${commission.toLocaleString('fr-FR')} €
+
+Merci !`;
+    document.getElementById('simTelegramBtn').href = `https://t.me/Gear5RF?text=${encodeURIComponent(msg)}`;
+
+    document.getElementById('simStep1').style.display = 'none';
+    document.getElementById('simStep2').style.display = 'block';
+  }
+
+  function backToSimStep1() {
+    document.getElementById('simStep1').style.display = 'block';
+    document.getElementById('simStep2').style.display = 'none';
+  }
 </script>
 
 </body>
